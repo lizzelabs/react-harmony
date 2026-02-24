@@ -1,7 +1,7 @@
 {
   "name": "@lizzelabs/react-harmony",
   "private": false,
-  "version": "0.0.0",
+  "version": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
