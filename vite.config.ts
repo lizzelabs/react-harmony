@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react-swc';
 
 // https://vite.dev/config/
 import { resolve } from 'node:path';
-import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import tsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 
