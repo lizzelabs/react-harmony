@@ -1,0 +1,142 @@
+{
+  "name": "@lizzelabs/react-harmony",
+  "private": false,
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.es.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./components": {
+      "import": "./dist/components.es.js",
+      "require": "./dist/components.es.js",
+      "types": "./dist/components/index.d.ts"
+    },
+    "./systems": {
+      "import": "./dist/systems.es.js",
+      "require": "./dist/systems.es.js",
+      "types": "./dist/components/piece-provider/static.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types.es.js",
+      "require": "./dist/types.es.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils.es.js",
+      "require": "./dist/utils.es.js",
+      "types": "./dist/utils/index.d.ts"
+    },
+    "./piece": {
+      "import": "./dist/piece.es.js",
+      "require": "./dist/piece.es.js",
+      "types": "./dist/components/piece/index.d.ts"
+    },
+    "./piece-provider": {
+      "import": "./dist/piece-provider.es.js",
+      "require": "./dist/piece-provider.es.js",
+      "types": "./dist/components/piece-provider/index.d.ts"
+    },
+    "./screen": {
+      "import": "./dist/screen.es.js",
+      "require": "./dist/screen.es.js",
+      "types": "./dist/components/screen/index.d.ts"
+    },
+    "./scrollable": {
+      "import": "./dist/scrollable.es.js",
+      "require": "./dist/scrollable.es.js",
+      "types": "./dist/components/scrollable/index.d.ts"
+    },
+    "./text": {
+      "import": "./dist/text.es.js",
+      "require": "./dist/text.es.js",
+      "types": "./dist/components/text/text.d.ts"
+    },
+    "./media": {
+      "import": "./dist/media.es.js",
+      "require": "./dist/media.es.js",
+      "types": "./dist/components/media/index.d.ts"
+    },
+    "./animations": {
+      "import": "./dist/animations.es.js",
+      "require": "./dist/animations.es.js",
+      "types": "./dist/components/animations/index.d.ts"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "development": "nodemon",
+    "build:dev": "tsc --noEmit && vite build --config vite.config.development.ts",
+    "build:prd": "tsc --noEmit && vite build --config vite.config.ts",
+    "test": "vitest",
+    "test:ci": "vitest run",
+    "coverage": "vitest run --coverage",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "lint": "eslint .",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
+    "@types/lodash": "^4.17.21",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@types/stylis": "^4.2.7",
+    "@typescript-eslint/parser": "^8.56.0",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "@vitest/coverage-v8": "^4.0.15",
+    "csstype": "^3.2.3",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "happy-dom": "^20.6.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "nodemon": "^3.1.11",
+    "prettier": "3.7.4",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-tsconfig-paths": "^6.0.3",
+    "vitest": "^4.0.15"
+  },
+  "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321",
+  "peerDependencies": {
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.23",
+    "stylis": "^4.3.6"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
+  }
+}

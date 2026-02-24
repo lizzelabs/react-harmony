@@ -1,0 +1,272 @@
+name: Run Checks and Prepare Version
+
+permissions:
+  contents: write
+  packages: write
+
+on:
+  push:
+    branches:
+      - fix/*
+      - hotfix/*
+      - feat/*
+      - feature/*
+      - pre-release/*
+
+jobs:
+  calculate_version:
+    runs-on: ubuntu-24.04
+    outputs:
+      bump: ${{ steps.version_bump.outputs.bump }}
+      version: ${{ steps.new_version.outputs.version }}
+    steps:
+      - name: Version
+        run: |
+          echo "Branch: ${{ github.ref_name }}"
+
+          if [[ "${{ github.ref_name }}" == fix/* || "${{ github.ref_name }}" == hotfix/*  ]]; then
+            echo "Patch"
+          elif [[ "${{ github.ref_name }}" == feature/* || "${{ github.ref_name }}" == feat/* ]]; then
+            echo "Minor"
+          else
+            echo "Major"
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.17.0
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Lint
+        run: pnpm lint
+
+      - name: Run Tests
+        run: pnpm test:ci
+
+      - name: Determine version bump
+        id: version_bump
+        run: |
+          if [[ "${{ github.ref_name }}" == fix/* || "${{ github.ref_name }}" == hotfix/*  ]]; then
+            echo "::set-output name=bump::patch"
+          elif [[ "${{ github.ref_name }}" == feature/* || "${{ github.ref_name }}" == feat/* ]]; then
+            echo "::set-output name=bump::minor"
+          else
+            echo "::set-output name=bump::major"
+          fi
+
+      - name: Save original branch
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+          echo "ORIGINAL_BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV
+          else
+            echo "ORIGINAL_BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
+          fi
+      - name: Go To main branch
+        run: |
+          git checkout main
+
+      - name: Calculate new version
+        id: new_version
+        run: |
+          bump='${{ steps.version_bump.outputs.bump }}' node --input-type=module -e "
+
+          import fs from 'fs';
+          import path from 'path';
+
+          const pkgPath = path.resolve('./package.json');
+          const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+
+          const bumpType = process.env.bump;
+          let version = pkg.version.split('.').map(Number);
+
+          if (!bumpType) {
+            throw new Error('Bump type is required!');
+          }
+
+          if (bumpType === 'major') { 
+            version[0] = version[0] + 1;
+            version[1] = 0;
+            version[2] = 0;
+          } else if (bumpType === 'minor') { 
+            version[1] = version[1] + 1;
+            version[2] = 0;
+          } else { 
+            version[2] = version[2] + 1;
+          }
+
+          const newVersion = version.join('.');
+          console.log(newVersion);
+          " > version.txt
+          new_version=$(cat version.txt)
+          echo "::set-output name=version::$new_version"
+        env:
+          bump: ${{ env.bump }}
+
+      - name: Go back to original branch
+        run: git checkout $ORIGINAL_BRANCH
+
+  create_milestone:
+    runs-on: ubuntu-24.04
+    needs: [calculate_version]
+    permissions: write-all
+    outputs:
+      milestone_number: ${{ steps.milestone.outputs.number }}
+    steps:
+      - name: Print Variables
+        run: |
+          echo "Version: ${{ needs.calculate_version.outputs.version }}"
+          echo "Bump: ${{ needs.calculate_version.outputs.bump }}"
+
+      - name: Check if Milestone Exists
+        id: check_milestone
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const milestones = await github.rest.issues.listMilestones({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+            });
+
+            const milestone = milestones.data.find(m => m.title === `v${{ needs.calculate_version.outputs.version }}`);
+            if (milestone) {
+              core.setOutput('milestoneId', milestone.number);
+              console.log(`Milestone already exists: ${milestone.number}`);
+            } else {
+              console.log('Milestone does not exist.');
+              core.setOutput('milestoneId', '');
+            }
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create milestone
+        id: milestone
+        if: steps.check_milestone.outputs.milestoneId == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          MILESTONE=$(gh api repos/${{ github.repository }}/milestones \
+            -f title="v${{ needs.calculate_version.outputs.version }}" \
+            -f description="Release new version" \
+            -f state="open" \
+            --jq '.number')
+
+          echo "::set-output name=number::${MILESTONE}"
+
+      - name: Set Existing Milestone Number
+        id: set_milestone
+        if: steps.check_milestone.outputs.milestoneId != ''
+        run: |
+          echo "::set-output name=number::${{ steps.check_milestone.outputs.milestoneId }}"
+
+  create_pull_request:
+    runs-on: ubuntu-24.04
+    needs: [calculate_version, create_milestone]
+    permissions: write-all
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Print Variables
+        run: |
+          echo "Branch name: ${{ github.ref_name }}"
+          echo "Version: ${{ needs.calculate_version.outputs.version }}"
+          echo "Bump: ${{ needs.calculate_version.outputs.bump }}"
+          echo "Milestone Number: ${{ needs.create_milestone.outputs.milestone_number }}"
+          echo "Actor: ${{ github.actor }}"
+      - name: Save original branch
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+          echo "ORIGINAL_BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV
+          else
+            echo "ORIGINAL_BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
+          fi
+
+      - name: Fetch Origin
+        run: |
+          git fetch origin
+      - name: Go to branch principal branch
+        run: |
+          git checkout main
+      - name: Create release branch
+        run: |
+          BRANCH="release/v${{ needs.calculate_version.outputs.version }}"
+
+          if git ls-remote --exit-code --heads origin $BRANCH; then
+            echo "Branch exists"
+          else
+            echo "Creating branch..."
+            git checkout -b $BRANCH
+            git push origin $BRANCH
+          fi
+      - name: Go back to original branch
+        run: git checkout $ORIGINAL_BRANCH
+
+      - name: Create pull request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { repo, owner } = context.repo;
+            const branchName = 'release/v${{ needs.calculate_version.outputs.version }}';
+            const pulls = await github.rest.pulls.list({
+              owner: owner,
+              repo: repo,
+              head: context.ref,
+              base: branchName,
+              state: 'open',
+            });
+
+            const pullRequest = (pulls.data.length < 1) ? 
+            await github.rest.pulls.create({
+                title: 'Prepare Release: v${{ needs.calculate_version.outputs.version }}',
+                owner: owner,
+                repo: repo,
+                head: context.ref,
+                base: branchName,
+                draft: false,
+                body: [
+                  'This pull request prepares the release for version v${{ needs.calculate_version.outputs.version }}',
+                  '- **Version Type:** ${{ needs.calculate_version.outputs.bump }}'
+                ].join('\n')
+            }) : await github.rest.pulls.update({
+                owner: owner,
+                repo: repo,
+                pull_number: pulls.data[0].number,
+                body: [
+                  pulls.data[0].body,
+                  `Updated by Job at: ${new Date().toISOString()}`,
+                ].join('\n'),
+              });
+
+            const { data: milestones } = await github.rest.issues.listMilestones({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+
+            const milestone = milestones.find(m => m.title === 'v${{ needs.calculate_version.outputs.version }}');
+
+            if (!milestone) {
+              throw new Error('Milestone REQUIRED!!!');
+            }
+
+            await github.rest.issues.update({
+              owner: owner,
+              repo: repo,
+              issue_number: (pullRequest.data[0] || pullRequest.data).number,
+              milestone: milestone.number,
+            });
+          token: ${{ secrets.GITHUB_TOKEN }}

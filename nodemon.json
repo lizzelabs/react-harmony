@@ -1,0 +1,13 @@
+{
+  "verbose": true,
+  "ignore": ["*.stories.ts"],
+  "watch": [
+    "./src/**/*.ts",
+    "./tsconfig.app.json",
+    "./tsconfig.json",
+    "vite.config.development.ts"
+  ],
+  "ext": "ts",
+  "exec": "pnpm build:dev",
+  "delay": "2500ms"
+}

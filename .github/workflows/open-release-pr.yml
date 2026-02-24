@@ -1,0 +1,32 @@
+on:
+    push:
+        branches:
+            - "release/*"
+jobs:
+    open_pull_request:
+        runs-on: ubuntu-24.04
+        permissions:
+            contents: write
+            pull-requests: write
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Create PR
+              shell: bash
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  BRANCH_NAME=${GITHUB_REF#refs/heads/}
+                  MILESTONE_NAME=$(echo $BRANCH_NAME | cut -d'/' -f2)
+
+                  echo "Criando PR para a Milestone: $MILESTONE_NAME"
+
+                  PR_URL=$(gh pr create \
+                              --base main \
+                              --head ${{ github.ref_name }} \
+                              --title "PR: ${{ github.ref_name }}" \
+                              --body "Automated PR from branch ${{ github.ref_name }}" \
+                              --milestone "$MILESTONE_NAME")
+
+                  echo "PR Criado: $PR_URL"

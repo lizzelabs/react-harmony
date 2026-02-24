@@ -1,0 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { PieceProperties } from './piece.types';
+
+export const PieceInvalidProps = [
+  'as',
+  'kind',
+  'aria',
+  'withStyle',
+  'direction',
+  'alignContent',
+  'justifyContent',
+  'justifyItems',
+  'alignItems',
+  'display',
+  'contentColumns',
+  'contentRows',
+  'atColumn',
+  'atRow',
+  'fontSize',
+  'flex',
+  'gap',
+  'textColor',
+  'backgroundColor',
+  'background',
+  'margin',
+  'padding',
+] as (keyof PieceProperties<any, any, any>)[];

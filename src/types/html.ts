@@ -1,0 +1,53 @@
+import type { JSX } from 'react';
+
+export type HtmlTag = keyof HTMLElementTagNameMap;
+export type IntrinsicElement = keyof JSX.IntrinsicElements;
+export type IntrinsicElementFromHTML<T extends HtmlTag> =
+  T extends IntrinsicElement ? T : never;
+
+export type TextTag =
+  | 'a'
+  | 'abbr'
+  | 'address'
+  | 'b'
+  | 'bdi'
+  | 'bdo'
+  | 'blockquote'
+  | 'cite'
+  | 'code'
+  | 'data'
+  | 'dd'
+  | 'del'
+  | 'dfn'
+  | 'dt'
+  | 'em'
+  | 'figcaption'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'i'
+  | 'ins'
+  | 'kbd'
+  | 'label'
+  | 'legend'
+  | 'li'
+  | 'mark'
+  | 'p'
+  | 'pre'
+  | 'q'
+  | 'rp'
+  | 'rt'
+  | 'ruby'
+  | 's'
+  | 'samp'
+  | 'small'
+  | 'span'
+  | 'strong'
+  | 'sub'
+  | 'sup'
+  | 'time'
+  | 'u'
+  | 'var';
