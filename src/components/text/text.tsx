@@ -16,6 +16,8 @@ export const InternalText = <
 };
 
 export const Text = memo(
-  withPieceAsContainer(InternalText) as typeof InternalText,
+  withPieceAsContainer(InternalText, {
+    withStyle: { display: 'flex', flex: '1 1 auto' },
+  }) as typeof InternalText,
   isEqual,
 ) as typeof InternalText;
