@@ -16,6 +16,9 @@ import type {
 
 export type PieceAlignmentAndStyleProperties<Theme extends object | undefined> =
   {
+    containerType?: CSSProperties['containerType'];
+    containerName?: CSSProperties['containerName'];
+    cursor?: CSSProperties['cursor'];
     margin?: PropWithTheme<string, Theme>;
     padding?: PropWithTheme<string, Theme>;
     textColor?: PropWithTheme<string, Theme>;
