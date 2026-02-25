@@ -24,4 +24,7 @@ export const PieceInvalidProps = [
   'background',
   'margin',
   'padding',
+  'containerType',
+  'containerName',
+  'cursor',
 ] as (keyof PieceProperties<any, any, any>)[];

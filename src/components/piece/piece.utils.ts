@@ -186,6 +186,21 @@ export const PieceUtils = {
             ? props.padding(theme)
             : props.padding,
       },
+      {
+        enabled: props.cursor !== undefined,
+        name: 'cursor',
+        value: props.cursor,
+      },
+      {
+        enabled: props.containerType !== undefined,
+        name: 'containerType',
+        value: props.containerType,
+      },
+      {
+        enabled: props.containerName !== undefined,
+        name: 'containerName',
+        value: props.containerName,
+      },
     ];
 
     const hasPosition = positionMap.some((position) => position.enabled);
