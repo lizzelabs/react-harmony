@@ -11,6 +11,7 @@ export type MediaProperties<Theme extends object | undefined> = {
   withStyle?:
     | PropWithTheme<WithStyle, Theme>[]
     | PropWithTheme<WithStyle[] | WithStyle, Theme>;
+  onActivate?: () => void;
 };
 
 export type UseMedia = { style: WithStyle; shouldRemoveComponent: boolean };
