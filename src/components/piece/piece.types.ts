@@ -16,6 +16,16 @@ import type {
 
 export type PieceAlignmentAndStyleProperties<Theme extends object | undefined> =
   {
+    all?: CSSProperties['all'];
+    justifySelf?: CSSProperties['justifySelf'];
+    alignSelf?: CSSProperties['alignSelf'];
+    position?: CSSProperties['position'];
+    transform?: CSSProperties['transform'];
+    textDecoration?: CSSProperties['textDecoration'];
+    top?: CSSProperties['top'];
+    bottom?: CSSProperties['bottom'];
+    left?: CSSProperties['left'];
+    right?: CSSProperties['right'];
     containerType?: CSSProperties['containerType'];
     containerName?: CSSProperties['containerName'];
     cursor?: CSSProperties['cursor'];
@@ -25,6 +35,8 @@ export type PieceAlignmentAndStyleProperties<Theme extends object | undefined> =
     background?: PropWithTheme<string, Theme>;
     backgroundColor?: PropWithTheme<string, Theme>;
     fontSize?: PropWithTheme<string, Theme>;
+    fontWeight?: CSSProperties['fontWeight'];
+    textTransform?: CSSProperties['textTransform'];
     gap?: CSSProperties['gap'];
     direction?: CSSProperties['flexDirection'];
     alignContent?: CSSProperties['alignContent'];
@@ -59,3 +71,14 @@ export type PieceProperties<
 } & ElementEvents<Element> &
   NoEventsAndAria<ComponentPropsWithoutRef<Element>> &
   PieceAlignmentAndStyleProperties<Theme>;
+
+type MapPieceAlignmentAndStyleProperties<T> = {
+  [K in keyof T]: {
+    name: string;
+    enabled: boolean;
+    value: T[K];
+  };
+}[keyof T][];
+
+export type PieceAlignmentAndStylePropertiesRaw =
+  MapPieceAlignmentAndStyleProperties<PieceAlignmentAndStyleProperties<any>>;

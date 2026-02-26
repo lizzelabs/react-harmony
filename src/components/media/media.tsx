@@ -9,15 +9,15 @@ const InternalMedia = <Theme extends object | undefined>(
 ): ReactNode => {
   const { style, shouldRemoveComponent } = useMedia(props);
 
-  return shouldRemoveComponent === false ? (
+  return (
     <Piece
       kind='media'
       as='section'
       withStyle={style}
     >
-      {props.children}
+      {shouldRemoveComponent === false ? props.children : null}
     </Piece>
-  ) : null;
+  );
 };
 
 export const Media = memo(InternalMedia, isEqual) as typeof InternalMedia;

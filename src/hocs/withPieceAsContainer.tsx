@@ -44,6 +44,8 @@ export function withPieceAsContainer<
       'width',
       'margin',
       'padding',
+      'cursor',
+      'withStyle',
     ];
 
     const { known: piece, unknown: props } = splitProps(
@@ -60,7 +62,9 @@ export function withPieceAsContainer<
 
     return (
       <Piece
-        kind='alignment-container'
+        kind='aligment-container'
+        display='flex'
+        flex={pieceProperties.flex || '1 1 auto'}
         {...(pieceProperties as any)}
       >
         <Component
