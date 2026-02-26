@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { MediaProperties, UseMedia } from './media.types';
 import type { WithStyle } from '@/types';
 import { usePieceProvider } from '../piece-provider';
@@ -9,7 +9,10 @@ export const useMedia = <Theme extends object | undefined>({
   animateAs,
   query,
   removeFromHtml,
+  onActivate,
 }: MediaProperties<Theme>): UseMedia => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, refresh] = useState(false);
   const { theme } = usePieceProvider<Theme>();
   const style = useMemo(
     () =>
@@ -35,11 +38,36 @@ export const useMedia = <Theme extends object | undefined>({
     [withStyle, theme, query, keyframes, animateAs],
   );
 
+  const onMediaChange = useCallback(
+    (event: MediaQueryListEvent) => {
+      if (event.matches && onActivate) {
+        refresh((prev) => !prev);
+        onActivate();
+      }
+    },
+    [onActivate],
+  );
+
   const shouldRemoveComponent =
     window.matchMedia(`(${typeof query === 'function' ? query(theme) : query})`)
       .matches === false
       ? removeFromHtml || false
       : false;
+
+  useEffect(
+    function onRender() {
+      const screen = window.matchMedia(
+        `(${typeof query === 'function' ? query(theme) : query})`,
+      );
+
+      screen.addEventListener('change', onMediaChange);
+
+      return () => {
+        screen.removeEventListener('change', onMediaChange);
+      };
+    },
+    [onMediaChange, theme, query],
+  );
 
   return {
     style,
