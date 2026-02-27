@@ -9,7 +9,7 @@ A new way of build user interfaces with react.
 
 ---
 
-## 🧭 Índice
+## 🧭 Index
 
 - [📖 Why](#-why)
 - [⚙️ Quick Start](#️-quick-start)
@@ -553,6 +553,9 @@ you component fills every space and the outside just align you know.
 ## 🖼️ Example Projects
 
 Here are some examples that you are free to get some inspiration:
+
+**[Color Picker](https://lizzelabs.github.io/css-colors/)** -
+[Github](https://github.com/lizzelabs/css-colors)
 
 ---
 
