@@ -26,6 +26,7 @@ export const useScrollable = <
     behavior,
     withStyle,
     size,
+    touchAction,
     ...piece
   } = fillObjectWithDefaults(props, context.defaults);
 
@@ -49,6 +50,7 @@ export const useScrollable = <
               horizontal as boolean,
               vertical as boolean,
               scrollSnap,
+              touchAction,
             ),
           )
         : {
