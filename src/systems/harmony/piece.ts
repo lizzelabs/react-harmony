@@ -7,6 +7,5 @@ export const PIECE: ProviderPattern<any, any> = {
     display: 'flex',
     flex: '1 1 auto',
     userSelect: 'none',
-    touchAction: 'none',
   },
 };
