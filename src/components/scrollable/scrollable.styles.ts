@@ -22,6 +22,8 @@ export const ScrollbarRoot = (
     display: 'flex',
     flex: '1 1 100%',
     scrollbarWidth: size,
+    WebkitOverflowScrolling: 'touch',
+    touchAction: vertical ? 'pan-y' : 'pan-x',
     scrollbarColor: `${highlight} ${color}`,
     [`@supports not (scrollbar-width: ${size})`]: {
       '&::-webkit-scrollbar': {
