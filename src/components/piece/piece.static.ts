@@ -43,6 +43,7 @@ export const PieceInvalidProps = [
   'textDecoration',
   'justifySelf',
   'alignSelf',
+  'touchAction',
 ] as (keyof PieceProperties<any, any, any>)[];
 
 export const getPieceAlignmentAndStylePropertiesRaw = <Theme>(
@@ -254,6 +255,11 @@ export const getPieceAlignmentAndStylePropertiesRaw = <Theme>(
       enabled: properties.alignSelf !== undefined,
       name: 'alignSelf',
       value: properties.alignSelf,
+    },
+    {
+      enabled: properties.touchAction !== undefined,
+      name: 'touchAction',
+      value: properties.touchAction,
     },
   ];
 };

@@ -17,6 +17,7 @@ import type {
 export type PieceAlignmentAndStyleProperties<Theme extends object | undefined> =
   {
     all?: CSSProperties['all'];
+    touchAction?: CSSProperties['touchAction'];
     justifySelf?: CSSProperties['justifySelf'];
     alignSelf?: CSSProperties['alignSelf'];
     position?: CSSProperties['position'];

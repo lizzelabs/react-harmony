@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { WithStyle } from '@/types';
+import type { CSSProperties } from 'react';
 
 export const ScrollbarRoot = (
   size: any,
@@ -9,6 +10,7 @@ export const ScrollbarRoot = (
   horizontal: boolean,
   vertical: boolean,
   scrollSnap: any,
+  touchAction?: CSSProperties['touchAction'],
 ) =>
   ({
     scrollBehavior: behavior,
@@ -23,7 +25,7 @@ export const ScrollbarRoot = (
     flex: '1 1 100%',
     scrollbarWidth: size,
     WebkitOverflowScrolling: 'touch',
-    touchAction: vertical ? 'pan-y' : 'pan-x',
+    touchAction: touchAction ? touchAction : vertical ? 'pan-y' : 'pan-x',
     scrollbarColor: `${highlight} ${color}`,
     [`@supports not (scrollbar-width: ${size})`]: {
       '&::-webkit-scrollbar': {
