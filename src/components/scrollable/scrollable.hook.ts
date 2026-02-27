@@ -17,6 +17,7 @@ export const useScrollable = <
   const { theme, getContext } = usePieceProvider<Theme>();
   const ref = useRef<HTMLDivElement | null>(null);
   const context = useMemo(() => getContext(props as any), [props, getContext]);
+
   const {
     scrollSnap,
     primary,
@@ -69,6 +70,7 @@ export const useScrollable = <
               horizontal as boolean,
               vertical as boolean,
               scrollSnap,
+              touchAction,
             ),
           },
     [
@@ -81,6 +83,7 @@ export const useScrollable = <
       horizontal,
       vertical,
       scrollSnap,
+      touchAction,
     ],
   );
 
