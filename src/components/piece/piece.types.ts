@@ -17,6 +17,18 @@ import type {
 export type PieceAlignmentAndStyleProperties<Theme extends object | undefined> =
   {
     all?: CSSProperties['all'];
+    transition?: PropWithTheme<CSSProperties['transition'], Theme>;
+    radius?: CSSProperties['borderRadius'];
+    topLeftRadius?: CSSProperties['borderTopLeftRadius'];
+    bottomLeftRadius?: CSSProperties['borderBottomLeftRadius'];
+    bottomRightRadius?: CSSProperties['borderBottomRightRadius'];
+    topRightRadius?: CSSProperties['borderTopRightRadius'];
+    outline?: PropWithTheme<CSSProperties['outline'], Theme>;
+    border?: PropWithTheme<CSSProperties['border'], Theme>;
+    borderLeft?: PropWithTheme<CSSProperties['borderLeft'], Theme>;
+    borderRight?: PropWithTheme<CSSProperties['borderRight'], Theme>;
+    borderBottom?: PropWithTheme<CSSProperties['borderBottom'], Theme>;
+    borderTop?: PropWithTheme<CSSProperties['borderTop'], Theme>;
     touchAction?: CSSProperties['touchAction'];
     justifySelf?: CSSProperties['justifySelf'];
     alignSelf?: CSSProperties['alignSelf'];
