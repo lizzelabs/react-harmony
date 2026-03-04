@@ -44,6 +44,18 @@ export const PieceInvalidProps = [
   'justifySelf',
   'alignSelf',
   'touchAction',
+  'transition',
+  'radius',
+  'topLeftRadius',
+  'bottomLeftRadius',
+  'bottomRightRadius',
+  'topRightRadius',
+  'outline',
+  'border',
+  'borderLeft',
+  'borderRight',
+  'borderBottom',
+  'borderTop',
 ] as (keyof PieceProperties<any, any, any>)[];
 
 export const getPieceAlignmentAndStylePropertiesRaw = <Theme>(
@@ -260,6 +272,87 @@ export const getPieceAlignmentAndStylePropertiesRaw = <Theme>(
       enabled: properties.touchAction !== undefined,
       name: 'touchAction',
       value: properties.touchAction,
+    },
+    {
+      enabled: properties.transition !== undefined,
+      name: 'transition',
+      value:
+        typeof properties.transition === 'function'
+          ? properties.transition(theme)
+          : properties.transition,
+    },
+    {
+      enabled: properties.radius !== undefined,
+      name: 'borderRadius',
+      value: properties.radius,
+    },
+    {
+      enabled: properties.topLeftRadius !== undefined,
+      name: 'borderTopLeftRadius',
+      value: properties.topLeftRadius,
+    },
+    {
+      enabled: properties.bottomLeftRadius !== undefined,
+      name: 'borderBottomLeftRadius',
+      value: properties.bottomLeftRadius,
+    },
+    {
+      enabled: properties.bottomRightRadius !== undefined,
+      name: 'borderBottomRightRadius',
+      value: properties.bottomRightRadius,
+    },
+    {
+      enabled: properties.topRightRadius !== undefined,
+      name: 'borderTopRightRadius',
+      value: properties.topRightRadius,
+    },
+    {
+      enabled: properties.outline !== undefined,
+      name: 'outline',
+      value:
+        typeof properties.outline === 'function'
+          ? properties.outline(theme)
+          : properties.outline,
+    },
+    {
+      enabled: properties.border !== undefined,
+      name: 'border',
+      value:
+        typeof properties.border === 'function'
+          ? properties.border(theme)
+          : properties.border,
+    },
+    {
+      enabled: properties.borderLeft !== undefined,
+      name: 'borderLeft',
+      value:
+        typeof properties.borderLeft === 'function'
+          ? properties.borderLeft(theme)
+          : properties.borderLeft,
+    },
+    {
+      enabled: properties.borderRight !== undefined,
+      name: 'borderRight',
+      value:
+        typeof properties.borderRight === 'function'
+          ? properties.borderRight(theme)
+          : properties.borderRight,
+    },
+    {
+      enabled: properties.borderBottom !== undefined,
+      name: 'borderBottom',
+      value:
+        typeof properties.borderBottom === 'function'
+          ? properties.borderBottom(theme)
+          : properties.borderBottom,
+    },
+    {
+      enabled: properties.borderTop !== undefined,
+      name: 'borderTop',
+      value:
+        typeof properties.borderTop === 'function'
+          ? properties.borderTop(theme)
+          : properties.borderTop,
     },
   ];
 };
