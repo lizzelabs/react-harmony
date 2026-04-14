@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { PieceProperties } from './piece.types';
 import {
-  getPieceAlignmentAndStylePropertiesRaw,
   PieceInvalidProps,
+  PIECE_STYLES_PROPERTIES,
+  TRANSLATOR_PIECE_STYLE_PROPERTIES_MAP,
+  LOADER_PIECE_STYLE_PROPERTIES_MAP,
 } from './piece.static';
 import type { HtmlTag, PropWithTheme, WithStyle } from '@/types';
 
@@ -14,14 +16,21 @@ export const PieceUtils = {
   >(
     props: PieceProperties<Theme, Element, Component>,
   ): PieceProperties<Theme, Element, Component> => {
-    const copy = { ...props };
+    const toDelete = [
+      ...PieceInvalidProps,
+      ...(props.additionalProperties || []),
+    ];
 
-    for (const prop of PieceInvalidProps) {
-      delete copy[prop as keyof typeof copy];
-    }
+    const sanitized = Object.keys(props).reduce(
+      (result, current) =>
+        toDelete.includes(current)
+          ? result
+          : { ...result, [current]: props[current] },
+      {} as PieceProperties<Theme, Element, Component>,
+    );
 
     return {
-      ...copy,
+      ...sanitized,
       ...props.aria,
     };
   },
@@ -49,34 +58,50 @@ export const PieceUtils = {
         )
       : style;
   },
-  loadPositionProps: <
+  loadProperties: <
     Theme extends object | undefined,
     Element extends HtmlTag,
     Component extends HTMLElement,
   >(
-    props: PieceProperties<Theme, Element, Component>,
-    style: WithStyle | undefined,
     theme: Theme,
+    props: PieceProperties<Theme, Element, Component>,
+    ...appendTo: any[]
   ): WithStyle | undefined => {
-    const positionMap = getPieceAlignmentAndStylePropertiesRaw(props, theme);
-    const hasPosition = positionMap.some((position) => position!.enabled);
-    const positionCss = positionMap.reduce(
+    const styles = PIECE_STYLES_PROPERTIES.reduce(
+      (result, current) =>
+        props[current] === undefined
+          ? result
+          : {
+              ...result,
+              [TRANSLATOR_PIECE_STYLE_PROPERTIES_MAP[current] !== undefined
+                ? TRANSLATOR_PIECE_STYLE_PROPERTIES_MAP[current]
+                : current]:
+                LOADER_PIECE_STYLE_PROPERTIES_MAP[current] !== undefined
+                  ? LOADER_PIECE_STYLE_PROPERTIES_MAP[current](props[current])
+                  : LOADER_PIECE_STYLE_PROPERTIES_MAP.all(
+                      theme,
+                      props[current],
+                    ),
+            },
+      {},
+    );
+
+    const withStyle = (appendTo || []).reduce(
       (css, current) => ({
         ...css,
-        ...(current!.enabled
-          ? {
-              [current!.name]: current!.value,
-            }
-          : {}),
+        ...current,
       }),
       {} as WithStyle,
     );
 
-    return !style && hasPosition === false
-      ? undefined
-      : {
-          ...style,
-          ...positionCss,
-        };
+    const objectIsPresent =
+      Object.keys(withStyle).length > 0 || Object.keys(styles).length > 0;
+
+    return objectIsPresent
+      ? {
+          ...withStyle,
+          ...styles,
+        }
+      : undefined;
   },
 };

@@ -56,7 +56,86 @@ export const PieceInvalidProps = [
   'borderRight',
   'borderBottom',
   'borderTop',
+  'additionalProperties',
 ] as (keyof PieceProperties<any, any, any>)[];
+
+export const PIECE_STYLES_PROPERTIES = [
+  'flex',
+  'gridTemplateColumns',
+  'gridTemplateRows',
+  'gridColumn',
+  'gridRow',
+  'height',
+  'width',
+  'display',
+  'flexDirection',
+  'alignContent',
+  'justifyContent',
+  'alignItems',
+  'justifyItems',
+  'fontSize',
+  'gap',
+  'color',
+  'background',
+  'backgroundColor',
+  'margin',
+  'padding',
+  'cursor',
+  'containerType',
+  'containerName',
+  'all',
+  'position',
+  'transform',
+  'top',
+  'bottom',
+  'left',
+  'right',
+  'fontWeight',
+  'textTransform',
+  'textDecoration',
+  'justifySelf',
+  'alignSelf',
+  'touchAction',
+  'transition',
+  'borderRadius',
+  'borderTopLeftRadius',
+  'borderBottomLeftRadius',
+  'borderBottomRightRadius',
+  'borderTopRightRadius',
+  'outline',
+  'border',
+  'borderLeft',
+  'borderRight',
+  'borderBottom',
+  'borderTop',
+];
+
+export const TRANSLATOR_PIECE_STYLE_PROPERTIES_MAP = {
+  atColumn: 'gridColumn',
+  atRow: 'gridRow',
+  contentColumns: 'gridTemplateColumns',
+  contentRows: 'gridTemplateRows',
+  direction: 'flexDirection',
+  textColor: 'color',
+  radius: 'borderRadius',
+  bottomLeftRadius: 'borderBottomLeftRadius',
+  bottomRightRadius: 'borderBottomRightRadius',
+  topLeftRadius: 'borderTopLeftRadius',
+  topRightRadius: 'borderTopRightRadius',
+};
+
+export const LOADER_PIECE_STYLE_PROPERTIES_MAP = {
+  contentColumns: <T>(value: T) =>
+    typeof value === 'number' ? `repeat(${value}, 1fr)` : value,
+  contentRows: <T>(value: T) =>
+    typeof value === 'number' ? `repeat(${value}, 1fr)` : value,
+  atColumn: <T>(value: T) =>
+    typeof value === 'number' ? `${value} / ${value + 1}` : value,
+  atRow: (value: any) =>
+    typeof value === 'number' ? `${value} / ${value + 1}` : value,
+  all: <T, V>(theme: T, value: V) =>
+    typeof value === 'function' ? value(theme) : value,
+};
 
 export const getPieceAlignmentAndStylePropertiesRaw = <Theme>(
   properties: PieceAlignmentAndStyleProperties<any>,

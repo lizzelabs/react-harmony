@@ -81,6 +81,7 @@ export type PieceProperties<
   children?: ReactNode | ReactNode[];
   aria?: AriaAttributes;
   className?: string | undefined;
+  additionalProperties?: string[];
 } & ElementEvents<Element> &
   NoEventsAndAria<ComponentPropsWithoutRef<Element>> &
   PieceAlignmentAndStyleProperties<Theme>;

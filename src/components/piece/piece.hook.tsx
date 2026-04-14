@@ -21,7 +21,7 @@ export const usePiece = <
   const id = useMemo(() => props.id || reactId, [props.id, reactId]);
   const componentClassName = useMemo(() => `${kind}-${id}`, [kind, id]);
 
-  const componentDefaults = useMemo(
+  const componentProps = useMemo(
     () => ({
       ...props,
       kind,
@@ -37,45 +37,35 @@ export const usePiece = <
         Element,
         Component,
         PieceProperties<Theme, Element, Component>
-      >(componentDefaults),
-    [getContext, componentDefaults],
+      >(componentProps),
+    [getContext, componentProps],
+  );
+
+  const componentDefaults = useMemo(
+    () => fillObjectWithDefaults(componentProps, context.defaults),
+    [context.defaults, componentProps],
   );
 
   const componentStyle = useMemo(
     () =>
-      PieceUtils.loadPositionProps<Theme, Element, Component>(
-        componentDefaults,
-        PieceUtils.pickComponentStyle(theme, componentDefaults.withStyle),
+      PieceUtils.loadProperties<Theme, Element, Component>(
         theme as Theme,
-      ),
-    [componentDefaults, theme],
-  );
-
-  const componentWithContext = useMemo(
-    () =>
-      fillObjectWithDefaults(
-        {
-          className: `${componentDefaults.className} ${context.className}`,
-        } as PieceProperties<Theme, Element, Component>,
-        context.defaults,
         componentDefaults,
+        context.style,
+        PieceUtils.pickComponentStyle(theme, componentDefaults.withStyle),
       ),
-    [context.defaults, context.className, componentDefaults],
+    [componentDefaults, context.style, theme],
   );
 
   const componentStrippedNonHtmlProps = useMemo(
-    () => PieceUtils.pickComponentProps(componentWithContext),
-    [componentWithContext],
+    () => PieceUtils.pickComponentProps(componentDefaults),
+    [componentDefaults],
   );
 
-  const Piece = (componentWithContext.as || 'div') as any;
+  const Piece = (componentDefaults.as || 'div') as any;
 
   useInsertionEffect(
     function applyCss() {
-      if (context.style) {
-        styles.apply(context.style, context.className);
-      }
-
       if (componentStyle) {
         styles.apply(componentStyle, componentClassName);
       }
@@ -84,14 +74,7 @@ export const usePiece = <
         styles.delete();
       };
     },
-    [
-      styles,
-      context.style,
-      context.className,
-      componentStyle,
-      componentClassName,
-      componentStyle,
-    ],
+    [styles, componentStyle, componentClassName, componentStyle],
   );
 
   return {

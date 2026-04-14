@@ -3,6 +3,7 @@ import type { ProviderPattern } from '@/components';
 
 export const MEDIA: ProviderPattern<any, any> = {
   applyOn: (props) => props.kind === 'media',
+  order: 0,
   style: {
     display: 'flex',
     flex: 1,

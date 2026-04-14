@@ -3,6 +3,7 @@ import type { ProviderPattern } from '@/components';
 
 export const RESET: ProviderPattern<any, any> = {
   applyOn: 'all',
+  order: 0,
   style: {
     margin: 0,
     padding: 0,
