@@ -61,8 +61,10 @@ export const PieceInvalidProps = [
 
 export const PIECE_STYLES_PROPERTIES = [
   'flex',
-  'gridTemplateColumns',
-  'gridTemplateRows',
+  'atColumn',
+  'atRow',
+  'contentColumns',
+  'contentRows',
   'gridColumn',
   'gridRow',
   'height',
@@ -108,6 +110,8 @@ export const PIECE_STYLES_PROPERTIES = [
   'borderRight',
   'borderBottom',
   'borderTop',
+  'textColor',
+  'direction',
 ];
 
 export const TRANSLATOR_PIECE_STYLE_PROPERTIES_MAP = {
@@ -125,15 +129,17 @@ export const TRANSLATOR_PIECE_STYLE_PROPERTIES_MAP = {
 };
 
 export const LOADER_PIECE_STYLE_PROPERTIES_MAP = {
-  contentColumns: <T>(value: T) =>
+  contentColumns: <Theme, T>(_: Theme, value: T) =>
     typeof value === 'number' ? `repeat(${value}, 1fr)` : value,
-  contentRows: <T>(value: T) =>
+  contentRows: <Theme, T>(_: Theme, value: T) =>
     typeof value === 'number' ? `repeat(${value}, 1fr)` : value,
-  atColumn: <T>(value: T) =>
+  atColumn: <Theme, T>(_: Theme, value: T) =>
     typeof value === 'number' ? `${value} / ${value + 1}` : value,
-  atRow: (value: any) =>
+  atRow: <Theme, T>(_: Theme, value: T) =>
     typeof value === 'number' ? `${value} / ${value + 1}` : value,
   all: <T, V>(theme: T, value: V) =>
+    typeof value === 'function' ? value(theme) : value,
+  undefined: <T, V>(theme: T, value: V) =>
     typeof value === 'function' ? value(theme) : value,
 };
 

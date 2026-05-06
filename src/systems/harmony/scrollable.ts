@@ -20,13 +20,14 @@ export const SCROLLABLE: ProviderPattern<any, any> = {
     touchAction,
     highlight,
     primary,
+    scrollMode,
   }: ScrollableProperties<any, any>) => {
     return {
       '--primary': 'rgb(220, 220, 220)',
       '--highlight': 'rgba(25, 25, 25, 0.1)',
       scrollBehavior: behavior,
-      overflowX: horizontal ? 'auto' : 'hidden',
-      overflowY: vertical ? 'auto' : 'hidden',
+      overflowX: horizontal ? scrollMode || 'auto' : 'hidden',
+      overflowY: vertical ? scrollMode || 'auto' : 'hidden',
       flexDirection: vertical ? 'column' : 'row',
       ...(scrollSnap ? { scrollSnapType: scrollSnap } : {}),
       minHeight: 0,

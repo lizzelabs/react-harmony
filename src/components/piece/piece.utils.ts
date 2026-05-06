@@ -77,7 +77,10 @@ export const PieceUtils = {
                 ? TRANSLATOR_PIECE_STYLE_PROPERTIES_MAP[current]
                 : current]:
                 LOADER_PIECE_STYLE_PROPERTIES_MAP[current] !== undefined
-                  ? LOADER_PIECE_STYLE_PROPERTIES_MAP[current](props[current])
+                  ? LOADER_PIECE_STYLE_PROPERTIES_MAP[current](
+                      theme,
+                      props[current],
+                    )
                   : LOADER_PIECE_STYLE_PROPERTIES_MAP.all(
                       theme,
                       props[current],

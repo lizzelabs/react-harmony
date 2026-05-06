@@ -14,4 +14,5 @@ export type ScrollableProperties<
   scrollSnap?: CSSProperties['scrollSnapType'];
   primary?: PropWithTheme<string, Theme>;
   highlight?: PropWithTheme<string, Theme>;
+  scrollMode?: 'visible' | 'auto' | 'scroll' | 'clip';
 };
