@@ -1,0 +1,74 @@
+---
+sidebar_position: 5
+sidebar_label: 'Working with CSS animations'
+---
+
+# Working with animations
+
+We basically have two ways of working with css animations
+
+### <small style={{ fontSize: '0.9rem' }} ><b>Component:</b></small> `<Animations />`
+
+Example:
+
+```tsx showLineNumbers
+const Main = () => {
+  return (
+    <Animations
+      value={{
+        name: 'fadeIn',
+        animation: {
+            '@keyframes fadeIn': {
+                from: {
+                    opacity: 1,
+                }
+                to: {
+                    opacity: 0,
+                }
+            }
+        }
+      }}
+    >
+      <Piece as='div' withStyle={{ animation: 'fadeIn 2s ease-in-out' }} ></Piece>
+      <Piece as='div' withStyle={{ animation: 'fadeIn 2s ease-in-out' }} ></Piece>
+      <Piece as='div' withStyle={{ animation: 'fadeIn 2s ease-in-out' }} ></Piece>
+    </Animations>
+  );
+};
+```
+
+after that you are able to use `animation: fadeIn 0.5 ease-in-out` at any
+children of that animation.
+
+### <small style={{ fontSize: '0.9rem' }} ><b>Property:</b></small> `withStyle`
+
+As I said before, everything is a piece remember ? So you can do at your
+`withStyle` property:
+
+```tsx showLineNumbers
+
+const Main = () => {
+  return (
+    <Piece
+      as='div'
+      withStyle={{
+        background: 'blue',
+        height: '50px',
+        width: '50px',
+        borderRadius: '5px',
+        animation: 'rotate 2s linear infinite',
+        transition: 'all 0.3s linear',
+        '@keyframes rotate': {
+            from: {
+                transform: 'rotate(0deg)'
+            },
+            to: {'
+                transform: 'rotate(360deg)'
+            }
+        }
+      }}
+    >
+    </Piece>
+  );
+}
+```

@@ -2,8 +2,7 @@
 import type { ProviderPattern, ScrollableProperties } from '@/components';
 
 export const SCROLLABLE: ProviderPattern<any, any> = {
-  applyOn: (props) =>
-    props.kind === 'scrollable' || props.kind === 'scrollable-2',
+  applyOn: (props) => props.kind === 'scrollable',
   order: 0,
   defaults: {
     primary: 'var(--primary)',

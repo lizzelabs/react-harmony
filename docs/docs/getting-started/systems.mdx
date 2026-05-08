@@ -1,0 +1,309 @@
+---
+sidebar_position: 3
+sidebar_label: 'Css Systems'
+---
+
+# Harmony System
+
+Here how It works we have flex for all of sort of pieces and I want you to think
+like this:
+
+- Flex as small parts of your screen (everything).
+- Grid as large parts of your screen (where you want to align many flex pieces).
+
+and I just make it easy to work:
+
+```js
+import { Piece } from '@lizzelabs/react-harmomny';
+
+export const Main = () => {
+  return (
+    <Piece
+      display='grid'
+      contentColumns='1fr 1fr'
+      contentRows='1fr 1fr'
+    >
+      <Piece
+        display='flex'
+        atRow={1}
+        atColum={1}
+      >
+        I am at first column and at first row.
+      </Piece>
+      <Piece
+        display='flex'
+        atRow={2}
+        atColum={2}
+      >
+        I am at second column and at second row.
+      </Piece>
+    </Piece>
+  );
+};
+```
+
+All pieces has this css:
+
+```js
+
+export const PIECE: ProviderPattern<any, any> = {
+  applyOn: (props) => props.kind === 'piece',
+  order: 0,
+  style: {
+    display: 'flex',
+    flex: '1 1 auto',
+    userSelect: 'none',
+  },
+};
+
+```
+
+You can ask why `user-select: none` and here's the answer it's really anoying
+navigate to a website where I can select everything even that doesn't meant for
+and for that reason it's the same with scrolls they broke our navigation
+everywhere when we want it or not and for that reason I have way to control it
+into our webapps adding basic reset for our controls:
+
+```js
+
+export const RESET: ProviderPattern<any, any> = {
+  applyOn: 'all',
+  order: 0,
+  style: {
+    margin: 0,
+    padding: 0,
+    border: 0,
+    fontSize: '100%',
+    fontWeight: '400',
+    fontStyle: 'normal',
+    boxSizing: 'border-box',
+    fontOpticalSizing: 'auto',
+    listStyle: 'none',
+    quotes: 'none',
+    userSelect: 'none',
+    overflow: 'hidden',
+  },
+};
+
+```
+
+But you'll probably ask, what do I do when I need for that reason I have a
+component called `<Scrollable />` where you can set the direction, animations,
+etc.
+
+## Creating your system
+
+You can set a css system with JS for example:
+
+```js
+
+import { ProviderPattern } from '@lizzelabs/react-harmony';
+
+const PIECE: ProviderPattern<any, any> = {
+  applyOn: (props) => props.kind === 'piece',
+  order: 0,
+  style: {
+    display: 'flex',
+    flex: '1 1 auto',
+    userSelect: 'none',
+  },
+};
+
+
+const LIST: ProviderPattern<any, any> = {
+  applyOn: 'ul',
+  order: 0,
+  style: {
+    listStyle: 'square inside',
+    paddingLeft: '20px'
+  },
+};
+
+
+const LIST_ITEM: ProviderPattern<any, any> = {
+    applyOn: 'li',
+    order: 0,
+    style: {
+        color: '#333',
+        line-height: 1.6
+    }
+};
+
+const MyCustomCssSystem =  [
+    PIECE,
+    LIST,
+    LIST_ITEM
+];
+
+
+export const Main = () => {
+
+    return (
+        <PieceProvider patterns={MyCustomCssSystem} >
+            <Piece as='ul' >
+                <Piece as='li'>
+                    <Piece>Item 1</Piece>
+                </Piece>
+            </Piece>
+        </PieceProvider>
+    )
+
+
+};
+
+```
+
+## Compounding Systems
+
+You can merge more than one system adding your styles to the main
+`HARMONY_SYSTEM`:
+
+```tsx
+import { mergeSystems, HARMONY_SYSTEM } from '@lizzelabs/react-harmony';
+
+interface CustomTheme {
+  color: string;
+  highlight: string;
+}
+
+export const MyCustomCssSystem = mergeSystems<CustomTheme>(
+  HARMONY_SYSTEM,
+  {
+    applyOn: (props) => props.kind === 'scrollable',
+    style: ({ theme }) => ({
+      '--color': theme.color,
+      '--highlight': theme.highlight,
+    }),
+    order: 0,
+  },
+  {
+    applyOn: 'all',
+    style: {
+      transition: 'all 0.3s linear',
+    },
+    order: 0,
+  },
+);
+```
+
+## Default Properties
+
+You're a totally able to set default properties in that schema
+
+```tsx
+import { Piece, PieceProvider } from '@lizzelabs/react-harmony';
+import { ReactNode } from 'react';
+
+export interface ContainerProps {
+  children: ReactNode;
+}
+
+const Container = (props: ContainerProps) => {
+  return <Piece as='div'>{props.children}</Piece>;
+};
+
+const Main = () => {
+  return (
+    <PieceProvider
+      patterns={{
+        applyOn: 'div',
+        defaults: {
+          aria: {
+            'aria-hidden': true,
+          },
+        },
+      }}
+    >
+      <Container>
+        <Piece as='label'>Hello World</Piece>
+      </Container>
+    </PieceProvider>
+  );
+};
+
+// Now the container will be hidded from screen readers
+```
+
+## Reference
+
+<table>
+  <thead>
+    <tr>
+      <th
+        colspan='1'
+        rowspan='1'
+        style={{ verticalAlign: 'middle' }}
+      >
+        Property
+      </th>
+      <th
+        colspan='2'
+        rowspan='1'
+      >
+        <p></p>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+      >
+        <p>applyOn</p>
+      </td>
+      <td >
+        Applies the rule on.
+      </td>
+      <td
+      >
+        <p>
+          (props: PieceProperties) => boolean
+        </p>
+        <p>
+          HTML Tags ex: span, ul, div
+        </p>
+        <p>
+          all
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td
+      >
+        <p>Order</p>
+      </td>
+      <td >
+        Priority of that style
+      </td>
+      <td
+      >
+        number
+      </td>
+    </tr>
+    <tr>
+      <td
+      >
+        <p>Style</p>
+      </td>
+      <td >
+        Css
+      </td>
+      <td
+      >
+        object
+      </td>
+    </tr>
+    <tr>
+      <td
+      >
+        <p>Defaults</p>
+      </td>
+      <td >
+        Default properties of a piece
+      </td>
+      <td
+      >
+        object
+      </td>
+    </tr>
+  </tbody>
+</table>

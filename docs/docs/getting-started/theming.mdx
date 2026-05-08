@@ -1,0 +1,89 @@
+---
+sidebar_position: 4
+sidebar_label: 'Theming'
+---
+
+# Theming
+
+I strongly recommend you to use typescript but if you dont want to don't worry,
+basically you have to create a file with your variables:
+
+```tsx
+export interface MyCustomTheme {
+  primary: {
+    color: string;
+    text: string;
+    accent: string;
+    shadow: string;
+  };
+  secondary: {
+    color: string;
+    text: string;
+    accent: string;
+    shadow: string;
+  };
+  error: string;
+  warning: string;
+  success: string;
+}
+
+export const Theme = {
+  primary: {
+    color: '#3789C8FF';
+    text: '#E1E1E1FF';
+    accent: '#2C6DA0FF';
+    shadow: '#21527833';
+  };
+  secondary: {
+    color: '#BE37C8FF';
+    text: '#E1E1E1FF';
+    accent: '#982CA0FF';
+    shadow: '#72217833';
+  };
+  error: '#BF4064FF';
+  warning: '#CA8235FF';
+  success: '#4EB15AFF';
+} satisfies MyCustomTheme;
+```
+
+after you need to register into our provider:
+
+```tsx
+import { PieceProvider } from '@lizzelabs/react-harmony';
+import { Theme } from './theme';
+
+export const RootApp = () => {
+  return (
+    <PieceProvider theme={Theme}>
+      <Piece as='h1'>Hello Word</Piece>
+    </PieceProvider>
+  );
+};
+```
+
+simple as that and after you can use into `withStyle` or even at some properties
+of piece:
+
+```tsx
+import { Piece } from '@lizzelabs/react-harmony';
+import { MyCustomTheme } from './theme';
+
+export const Label = (props: LabelProps) => {
+  return (
+    <Piece
+      as='span'
+      textColor={(theme: MyCustomTheme) => theme.primary.text}
+      withStyle={(theme: MyCustomTheme) => ({
+        padding: '5px',
+        borderRadius: '3px',
+        background: theme.primary.color,
+      })}
+    >
+      {props.children}
+    </Piece>
+  );
+};
+```
+
+for the list with all properties you can do the same look
+[Here](../components/piece.mdx)

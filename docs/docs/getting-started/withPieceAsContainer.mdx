@@ -1,0 +1,48 @@
+---
+sidebar_position: 7
+sidebar_label: 'withPieceAsContainer'
+---
+
+# withPieceAsContainer
+
+Sometimes you'll want align components, stylish your own, for that reason I have
+a simple HOC that encapsulates your component into a piece, turning whatever you
+want into a piece:
+
+```tsx
+interface ButtonProps {
+  children?: string;
+}
+
+const Button = (props: ButtonProps) => {
+  return <button type='button'>{props.children}</button>;
+};
+
+// highlight-start
+const ButtonAsPiece = withPieceAsContainer(Button, {
+  // Piece default properties:
+  flex: '1 0 auto',
+}) as Button;
+// highlight-end
+
+//Now i can apply properties from a piece into my custom button.
+
+const Main = () => {
+  // highlight-start
+  return (
+    <>
+      <ButtonAsPiece
+        width='200px'
+        height='200px'
+        radius='50%'
+      />
+      <ButtonAsPiece
+        width='50'
+        height='50px'
+        radius='50%'
+      />
+    </>
+  );
+  // highlight-end
+};
+```
