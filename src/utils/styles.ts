@@ -26,7 +26,10 @@ export class Styles {
     return style.sheet;
   }
 
-  translateObjecToCss(selector: string, styles?: CSSProperties): string {
+  private translateObjecToCss(
+    selector: string,
+    styles?: CSSProperties,
+  ): string {
     if (!styles) {
       return '';
     }
@@ -40,7 +43,7 @@ export class Styles {
       .join('')}}`;
   }
 
-  translateAnimationToCss(style: WithStyle): string {
+  private translateAnimationToCss(style: WithStyle): string {
     return Object.keys(style)
       .map(
         (keyframe) =>
@@ -56,7 +59,7 @@ export class Styles {
       .join('');
   }
 
-  splitRootAndPseudo(
+  private splitClasses(
     obj: WithStyle,
     className?: string,
     media?: string,
@@ -84,12 +87,14 @@ export class Styles {
     ]);
 
     return Object.keys(root).length > 0
-      ? [{ selector: `.${className}`, styles: root, media }, ...pseudoCss]
+      ? [{ selector: `.${className}`, styles: root }, ...pseudoCss]
       : pseudoCss;
   }
 
-  splitWithIntoCssClasses(styles: WithStyle, className?: string) {
-    const { root, media, globals, animations } = Object.keys(styles).reduce(
+  private splitRules(styles: WithStyle, className?: string) {
+    const { root, media, globals, classes, animations } = Object.keys(
+      styles,
+    ).reduce(
       (result, key) => {
         if (
           key.indexOf(Styles.MEDIA_KEY) === -1 &&
@@ -124,13 +129,20 @@ export class Styles {
               ...result.media,
               [key]: [
                 ...(result.media[key] || []),
-                ...this.splitRootAndPseudo(
-                  styles[key] as WithStyle,
-                  className,
-                  key,
-                ),
+                ...this.splitClasses(styles[key] as WithStyle, className, key),
               ],
             },
+          };
+        } else if (typeof styles[key] === 'object') {
+          return {
+            ...result,
+            classes: [
+              ...result.classes,
+              {
+                selector: key,
+                styles: styles[key],
+              },
+            ],
           };
         } else {
           return {
@@ -147,22 +159,25 @@ export class Styles {
         animations: {},
         media: {} as { [key: string]: CssClass[] },
         globals: [] as CssClass[],
+        classes: [] as { selector: string; styles: WithStyle }[],
       },
     );
 
     return {
       globals,
-      root:
-        Object.keys(root).length > 0
-          ? this.splitRootAndPseudo(root, className)
-          : [],
+      root: [
+        ...(className ? this.splitClasses(root, className) : []),
+        ...(classes.flatMap((current) =>
+          this.splitClasses(current.styles, current),
+        ) || []),
+      ],
       media,
       animations,
     };
   }
 
   apply(styles: WithStyle, className?: string): void {
-    const { root, media, globals, animations } = this.splitWithIntoCssClasses(
+    const { root, media, globals, animations } = this.splitRules(
       styles,
       className,
     );
@@ -209,7 +224,7 @@ export class Styles {
     this.insert(sanitizedMedia);
   }
 
-  insert(css?: string): void {
+  private insert(css?: string): void {
     if (!css) {
       return;
     }

@@ -17,7 +17,7 @@ export const fillObjectWithDefaults = <T extends object, D extends object>(
         typeof defaultValue === 'object' &&
         Array.isArray(defaultValue) === false
       ) {
-        copy[key as any] = { ...targetValue, ...defaultValue };
+        copy[key as any] = { ...defaultValue, ...targetValue };
       } else if (targetValue === undefined) {
         copy[key as any] = defaultValue;
       }

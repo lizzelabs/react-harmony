@@ -114,6 +114,7 @@ describe('Piece Renders', () => {
       <PieceProvider
         patterns={[
           {
+            order: 0,
             applyOn: (props: any) => props.kind === 'test',
             defaults: {
               aria: {
@@ -139,6 +140,7 @@ describe('Piece Renders', () => {
       <PieceProvider
         patterns={[
           {
+            order: 0,
             applyOn: (props: any) => props.kind === 'test',
             style: {
               background: 'blue',
@@ -164,6 +166,7 @@ describe('Piece Renders', () => {
       <PieceProvider
         patterns={[
           {
+            order: 0,
             applyOn: (props: any) => props.kind === 'test',
             defaults: {
               aria: {
