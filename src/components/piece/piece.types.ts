@@ -43,7 +43,15 @@ export type PieceAlignmentAndStyleProperties<Theme extends object | undefined> =
     containerName?: CSSProperties['containerName'];
     cursor?: CSSProperties['cursor'];
     margin?: PropWithTheme<string, Theme>;
+    marginLeft?: PropWithTheme<string, Theme>;
+    marginRight?: PropWithTheme<string, Theme>;
+    marginTop?: PropWithTheme<string, Theme>;
+    marginBottom?: PropWithTheme<string, Theme>;
     padding?: PropWithTheme<string, Theme>;
+    paddingTop?: PropWithTheme<string, Theme>;
+    paddingBottom?: PropWithTheme<string, Theme>;
+    paddingLeft?: PropWithTheme<string, Theme>;
+    paddingRight?: PropWithTheme<string, Theme>;
     textColor?: PropWithTheme<string, Theme>;
     background?: PropWithTheme<string, Theme>;
     backgroundColor?: PropWithTheme<string, Theme>;
@@ -64,6 +72,7 @@ export type PieceAlignmentAndStyleProperties<Theme extends object | undefined> =
     atColumn?: CSSProperties['gridColumn'] | number;
     atRow?: CSSProperties['gridRow'] | number;
     flex?: CSSProperties['flex'];
+    textShadow?: PropWithTheme<string, Theme>;
     withStyle?:
       | PropWithTheme<WithStyle, Theme>[]
       | PropWithTheme<WithStyle[] | WithStyle, Theme>;
