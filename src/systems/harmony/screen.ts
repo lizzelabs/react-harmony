@@ -3,6 +3,7 @@ import type { ProviderPattern } from '@/components';
 
 export const SCREEN: ProviderPattern<any, any> = {
   applyOn: (props) => props.kind === 'screen',
+  order: 0,
   style: {
     display: 'grid',
     gridTemplateColumns: '1fr',

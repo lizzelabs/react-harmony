@@ -3,6 +3,7 @@ import type { ProviderPattern } from '@/components';
 
 export const PIECE: ProviderPattern<any, any> = {
   applyOn: (props) => props.kind === 'piece',
+  order: 0,
   style: {
     display: 'flex',
     flex: '1 1 auto',

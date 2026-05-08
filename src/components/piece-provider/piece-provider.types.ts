@@ -14,14 +14,22 @@ export type ApplyFn = <
   theme: T,
 ) => boolean;
 
+type ThemeWithProperties<
+  Theme extends object | undefined,
+  Element extends HtmlTag,
+  Component extends HTMLElement = HTMLElementTagNameMap[Element],
+> = PieceProperties<Theme, Element, Component> & { theme: Theme };
+
 export type ProviderPattern<
   T extends object | undefined,
   Element extends HtmlTag,
   Component extends HTMLElement = HTMLElementTagNameMap[Element],
+  Input extends ThemeWithProperties<T, Element, Component> = any,
 > = {
   applyOn: HtmlTag | 'all' | ApplyFn;
-  defaults?: PropWithTheme<PieceProperties<T, Element, Component>, T>;
-  style?: PropWithTheme<WithStyle, T>;
+  defaults?: PropWithTheme<PieceProperties<T, Element, Component>, Input>;
+  style?: PropWithTheme<WithStyle, Input>;
+  order: number;
 };
 
 export interface PieceProviderProperties<T extends object | undefined> {

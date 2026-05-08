@@ -1,0 +1,177 @@
+---
+sidebar_position: 1
+sidebar_label: 'Overview'
+slug: /
+---
+
+# 📖 Introduction to React Harmony
+
+Nowadays we have a lot of style libs, and many times we dont need to everything
+in each one to build our interfaces, it costs to our users download every css
+class unused, so i think in an easy and elegant way to style all of components
+and how to keep everything easy to mantain and fast to develop new components.
+
+## Main Idea
+
+Everything you should know about it is: all you need is a piece, I mean
+
+```tsx showLineNumbers live
+function Main(props) {
+  return (
+    <Piece
+      as='div'
+      display='flex'
+      direction='column'
+    >
+      <Piece
+        as='div'
+        height='50px'
+        width='50px'
+        background='red'
+      ></Piece>
+      <Piece
+        as='label'
+        fontSize='18px'
+        fontWeight='bold'
+      >
+        Hello world!
+      </Piece>
+      <Piece as='input'></Piece>
+    </Piece>
+  );
+}
+```
+
+with it now you're able to set patterns to fill your styles, default properties
+through a component called **`PieceProvider`**
+
+```tsx showLineNumbers live noInline
+interface MyCustomTheme {
+  primaryColor: string;
+  textColor: string;
+}
+
+interface TitleProps {
+  children?: string;
+}
+
+const Theme = {
+  primaryColor: '#FFF',
+  textColor: '#000',
+} satisfies MyCustomTheme;
+
+const Title = (props: TitleProps) => {
+  return (
+    <label
+      as='h6'
+      kind='title'
+    >
+      {props.children}
+    </label>
+  );
+};
+
+const Main = () => {
+  return (
+    <PieceProvider
+      theme={Theme}
+      patterns={[
+        {
+          order: 1,
+          applyOn: 'all',
+          styles: {
+            margin: 0,
+            padding: 0,
+          },
+          defaults: {
+            aria: {
+              'aria-hidden': 'true',
+            },
+          },
+        },
+        {
+          order: 1,
+          applyOn: (props: PieceProperties) => props.kind === 'title',
+          styles: (theme: MyCustomTheme) => ({
+            background: theme.primaryColor,
+            color: theme.textColor,
+          }),
+        },
+      ]}
+    >
+      <Title>Now all of title are hidden from assistive technology</Title>
+    </PieceProvider>
+  );
+};
+
+render(<Main />);
+```
+
+## Why do it
+
+I make easy to stylish your components with the most powerfull way to do it with
+css in js:
+
+- Allow us to keep the power and core of our business rules for UI into one
+  language, javascript.
+
+so you can do inside your component:
+
+```ts
+import { Piece } from '@lizzelabs/react-harmony';
+
+<Piece textColor={(theme: MyCustomTheme) = theme.textColor} />
+
+// Or
+
+<Piece withStyle={{
+  containerType: 'inline-size',
+  containerName: 'card'
+  flex: '0 0 100%'
+}} >
+    <Piece withStyle={(theme: MyCustomTheme) => ({
+        background: theme.primaryColor,
+        transition: 'all 0.3s ease-in-out',
+        '&:hover': {
+            background: theme.hover,
+        },
+        '@media screen (max-width: 500px)': {
+            background: theme.secondaryColor
+        },
+        '@container card (max-width: 600px)': {
+            textOverflow: 'ellipsis'
+        },
+        '@keyframes fade': {
+            from: {
+                opacity: 0;
+            }
+            to: {
+                opacity: 1;
+            }
+        }
+        }} >
+    Hello world!
+  </Piece>
+</Piece>
+
+```
+
+- You're able to set patterns for sort of components and their styles or default
+  properties.
+- You keep your code easy to maintain.
+- Keeping eveything as js you get the control about everything (you set your
+  rules in css more easy).
+
+**To keep easy to start you can import the default system flex + grid:**
+
+```js
+import { HARMONY_SYSTEM, PieceProvider } from '@lizzelabs/react-harmony';
+
+export const Main = () => {
+  return (
+    <PieceProvider patterns={HARMONY_SYSTEM}>
+      <RootPage />
+    </PieceProvider>
+  );
+};
+```

@@ -49,3 +49,22 @@ export type WithStyle =
   | {
       [key in `--${string}`]?: string | number;
     };
+
+export type UseStyle = {
+  [key: string]: WithStyle;
+  [key: `@global${string}`]: WithStyle;
+};
+
+export type UseStyleClasses<T extends UseStyle> = Pick<
+  T,
+  {
+    [K in keyof T]: K extends `@global${string}` ? never : K;
+  }[keyof T]
+>;
+
+export type UseStyleResult<T extends UseStyle> = {
+  [K in keyof UseStyleClasses<T>]: string;
+} & {
+  appendAll: () => string;
+  append: (...classes: string[]) => string;
+};
