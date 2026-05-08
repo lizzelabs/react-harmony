@@ -21,8 +21,10 @@ const config: Config = {
   baseUrl: '/css-colors/',
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'LizzeLabs', // Usually your GitHub org/user name.
-  projectName: 'React Harmony', // Usually your repo name.
+  organizationName: 'lizzelabs', // Usually your GitHub org/user name.
+  projectName: 'react-harmony', // Usually your repo name.
+  deploymentBranch: 'gh-pages',
+  trailingSlash: false,
   onBrokenLinks: 'throw',
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
