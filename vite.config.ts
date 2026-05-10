@@ -25,6 +25,7 @@ export default defineConfig({
         ),
         screen: resolve(__dirname, 'src/components/screen/index.ts'),
         scrollable: resolve(__dirname, 'src/components/scrollable/index.ts'),
+        hocs: resolve(__dirname, 'src/hocs/index.ts'),
         text: resolve(__dirname, 'src/components/text/index.ts'),
         systems: resolve(__dirname, 'src/systems/index.ts'),
         types: resolve(__dirname, 'src/types'),

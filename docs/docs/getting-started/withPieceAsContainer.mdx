@@ -5,9 +5,9 @@ sidebar_label: 'withPieceAsContainer'
 
 # 🛠️ withPieceAsContainer
 
-Sometimes you'll want align components, stylish your own, for that reason I have
-a simple HOC that encapsulates your component into a piece, turning whatever you
-want into a piece:
+Sometimes you want to shape or align, your component outside I mean from a
+container, page, etc and iIt's usefull do it with a HOC:
+**`withPieceAsContainer`**
 
 ```tsx
 interface ButtonProps {
@@ -22,10 +22,10 @@ const Button = (props: ButtonProps) => {
 const ButtonAsPiece = withPieceAsContainer(Button, {
   // Piece default properties:
   flex: '1 0 auto',
-}) as Button;
+});
 // highlight-end
 
-//Now i can apply properties from a piece into my custom button.
+//Now i can apply properties of a piece into my custom button.
 
 const Main = () => {
   // highlight-start
