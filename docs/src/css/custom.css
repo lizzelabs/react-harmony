@@ -10,6 +10,11 @@
   display: none !important;
 }
 
+code {
+  white-space: pre-wrap !important;
+  word-break: break-all !important;
+}
+
 :root {
   --ifm-color-primary: hsl(226, 22.88%, 40%);
   --ifm-color-primary-dark: hsl(226, 22.88%, 30%);

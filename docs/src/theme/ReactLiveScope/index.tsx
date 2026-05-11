@@ -6,9 +6,13 @@ import {
   Scrollable,
   Text,
   Media,
+  useStyle,
+  Styles,
+  HARMONY_SYSTEM,
+  mergeSystems,
 } from '@lizzelabs/react-harmony';
 
-const ReactLiveScope: unknown = {
+export default {
   React,
   ...React,
   Piece,
@@ -17,6 +21,8 @@ const ReactLiveScope: unknown = {
   Scrollable,
   Text,
   Media,
+  Styles,
+  HARMONY_SYSTEM,
+  mergeSystems,
+  useStyle,
 };
-
-export default ReactLiveScope;

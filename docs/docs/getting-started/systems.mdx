@@ -5,48 +5,40 @@ sidebar_label: 'Css Systems'
 
 # ♾️ Harmony System
 
-Here how It works we have flex for all of sort of pieces and I want you to think
-like this:
+At the next lines I'll explain how the default system works and How you can
+create or extend your one of your own:
 
-- Flex as small parts of your screen (everything).
-- Grid as large parts of your screen (where you want to align many flex pieces).
+**`HARMONY_SYSTEM:`**
 
-and I just make it easy to work:
+First of all, I would like you to think as:
 
-```js
-import { Piece } from '@lizzelabs/react-harmomny';
+- **Flex:** <small>**_`<Piece kind='piece' />`_**</small>
 
-export const Main = () => {
-  return (
-    <Piece
-      display='grid'
-      contentColumns='1fr 1fr'
-      contentRows='1fr 1fr'
-    >
-      <Piece
-        display='flex'
-        atRow={1}
-        atColum={1}
-      >
-        I am at first column and at first row.
-      </Piece>
-      <Piece
-        display='flex'
-        atRow={2}
-        atColum={2}
-      >
-        I am at second column and at second row.
-      </Piece>
-    </Piece>
-  );
+_Small parts of your screen, everything you want to organize into a container
+whatever the kind of them._
+
+- **Grid:** <small>**_`<Piece kind='container' />`_**</small>
+
+_Containers or your big parts of your screen where you want to organize your
+small parts (flex)_
+
+So everything that you need is a `piece` at other hand everything that you need
+to organize our pieces is a `container`
+
+#### Basic Grid:
+
+```tsx showLineNumbers live noInline
+const ContainerPattern = {
+  order: 0,
+  applyOn: (props: PieceProperties<any, any>) => props.kind === 'container',
+  styles: {
+    display: 'grid',
+    flex: '1 1 auto',
+    userSelect: 'none',
+  },
 };
-```
 
-All pieces has this css:
-
-```js
-
-export const PIECE: ProviderPattern<any, any> = {
+const PiecePattern = {
   applyOn: (props) => props.kind === 'piece',
   order: 0,
   style: {
@@ -56,17 +48,66 @@ export const PIECE: ProviderPattern<any, any> = {
   },
 };
 
+const Main = () => {
+  return (
+    <PieceProvider patterns={[ContainerPattern, PiecePattern]}>
+      <Piece
+        kind='container'
+        contentColumns='1fr 1fr'
+        contentRows='1fr 1fr'
+      >
+        <Piece
+          kind='piece'
+          atRow={1}
+          atColum={1}
+        >
+          Hello world.
+        </Piece>
+        <Piece
+          kind='piece'
+          atRow={2}
+          atColum={2}
+        >
+          Hello world 2.
+        </Piece>
+      </Piece>
+    </PieceProvider>
+  );
+};
+
+render(<Main />);
 ```
 
-You can ask why `user-select: none` and here's the answer it's really anoying
-navigate to a website where I can select everything even that doesn't meant for
-and for that reason it's the same with scrolls they broke our navigation
-everywhere when we want it or not and for that reason I have way to control it
-into our webapps adding basic reset for our controls:
+#### Align Components
 
-```js
+```tsx
+function Main() {
+  return (
+    <PieceProvider patterns={HARMONY_SYSTEM}>
+      <Piece
+        kind='container'
+        alignItems='end'
+        justifyContent='end'
+      >
+        <Piece
+          kind='piece'
+          alignSelf='start'
+        >
+          Hello world
+        </Piece>
+        <Piece kind='piece'>Hello world</Piece>
+      </Piece>
+    </PieceProvider>
+  );
+}
+```
 
-export const RESET: ProviderPattern<any, any> = {
+#### **`Reset CSS`**
+
+In the system offered we count with:
+
+```tsx
+const RESET = {
   applyOn: 'all',
   order: 0,
   style: {
@@ -84,83 +125,169 @@ export const RESET: ProviderPattern<any, any> = {
     overflow: 'hidden',
   },
 };
-
 ```
 
-But you'll probably ask, what do I do when I need for that reason I have a
-component called `<Scrollable />` where you can set the direction, animations,
-etc.
+You'll probably ask why put **`overflow: hidden`** for all sort of component...
+
+#### **`<Scrollable />`**
+
+Something that always broke our navigation is definitely scrolls, when we want
+to put it or not. For that reason I think the best solution at all is hide from
+everything and show when you want to with: `<Scrollable />`.
+
+Then everytime you want to render something that will grow more than your
+avaiable space, like lists:
+
+- **You can select the direction.**
+- **Customize colors to match with your style.**
+- **Animate: instant, smooth.**
+
+```tsx showLineNumbers live
+<PieceProvider
+  theme={{
+    color: 'blue',
+    highlight: 'orangeblue',
+  }}
+  patterns={mergeSystems(HARMONY_SYSTEM, {
+    order: 0,
+    applyOn: (props) => props.kind === 'scrollable',
+    style: (theme) => ({
+      '--color': theme.color,
+      '--highlight': theme.highlight,
+    }),
+  })}
+>
+  <Piece
+    kind='container'
+    width='500px'
+  >
+    <Scrollable
+      horizontal
+      behavior='instant' //Optional
+    >
+      <Piece
+        as='div'
+        flex='0 0 350px'
+        height='50px'
+        background='green'
+      ></Piece>
+      <Piece
+        as='div'
+        flex='0 0 350px'
+        height='50px'
+        background='blue'
+      ></Piece>
+    </Scrollable>
+  </Piece>
+</PieceProvider>
+```
+
+#### **`<Text />`**
+
+Basic with this component you can use a text and align in all directions with
+`flex props`:
+
+```tsx
+<Text
+  as='p'
+  justifyContent='center'
+  alignItems='center'
+>
+  Centered
+</Text>
+```
+
+#### **`<Media />`**
+
+Sometimes you want to hide some component at some screen size:
+
+```tsx showLineNumbers
+<Media query='(min-height: 702px)'>
+  <Piece>Hello world</Piece>
+</Media>
+```
+
+Now you only will see it at screens bigger than **`702px`**.
+
+However the element will remain at your `HTML` if you don't want to:
+
+```tsx showLineNumbers
+<Media
+  query='(min-height: 702px)'
+  removeFromHtml
+>
+  <Piece>Hello world</Piece>
+</Media>
+```
+
+And if you want to be notified when the element will be activate
+
+```tsx showLineNumbers
+<Media
+  query='(min-height: 702px)'
+  removeFromHtml
+  onActivate={myFunction}
+>
+  <Piece>Hello world</Piece>
+</Media>
+```
 
 ## Creating your system
 
-You can set a css system with JS for example:
+You can create your own:
 
-```js
-
-import { ProviderPattern } from '@lizzelabs/react-harmony';
-
-const PIECE: ProviderPattern<any, any> = {
+```tsx live noInline
+const PIECE = {
   applyOn: (props) => props.kind === 'piece',
   order: 0,
   style: {
-    display: 'flex',
-    flex: '1 1 auto',
+    display: 'block',
     userSelect: 'none',
   },
 };
 
-
-const LIST: ProviderPattern<any, any> = {
+const LIST = {
   applyOn: 'ul',
   order: 0,
   style: {
     listStyle: 'square inside',
-    paddingLeft: '20px'
+    paddingLeft: '20px',
   },
 };
 
-
-const LIST_ITEM: ProviderPattern<any, any> = {
-    applyOn: 'li',
-    order: 0,
-    style: {
-        color: '#333',
-        line-height: 1.6
-    }
+const LIST_ITEM = {
+  applyOn: 'li',
+  order: 0,
+  style: {
+    color: 'orange',
+    lineHeight: 1.8,
+  },
 };
 
-const MyCustomCssSystem =  [
-    PIECE,
-    LIST,
-    LIST_ITEM
-];
+const MyCustomCssSystem = [PIECE, LIST, LIST_ITEM];
 
-
-export const Main = () => {
-
-    return (
-        <PieceProvider patterns={MyCustomCssSystem} >
-            <Piece as='ul' >
-                <Piece as='li'>
-                    <Piece>Item 1</Piece>
-                </Piece>
-            </Piece>
-        </PieceProvider>
-    )
-
-
+const Main = () => {
+  return (
+    <PieceProvider patterns={MyCustomCssSystem}>
+      <Piece as='ul'>
+        <Piece as='li'>Item 1</Piece>
+      </Piece>
+    </PieceProvider>
+  );
 };
 
+render(<Main />);
 ```
+
+But if you want to use **`<Scrollable />`** and other components designed for
+you should extend from the main system:
 
 ## Compounding Systems
 
 You can merge more than one system adding your styles to the main
-`HARMONY_SYSTEM`:
+`HARMONY_SYSTEM` by importing **`mergeSystems`** look:
 
 ```tsx
-import { mergeSystems, HARMONY_SYSTEM } from '@lizzelabs/react-harmony';
-
 interface CustomTheme {
   color: string;
   highlight: string;
