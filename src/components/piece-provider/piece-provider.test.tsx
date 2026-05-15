@@ -19,6 +19,6 @@ describe('PieceProvider Renders', () => {
 
     const element = document.getElementById('2') as Element;
     const styles = window.getComputedStyle(element);
-    expect(styles.color).toBe('blue');
+    expect(styles.color).toBe('rgb(0, 0, 255)');
   });
 });
