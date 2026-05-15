@@ -92,9 +92,7 @@ export class Styles {
   }
 
   private splitRules(styles: WithStyle, className?: string) {
-    const { root, media, globals, classes, animations } = Object.keys(
-      styles,
-    ).reduce(
+    const { root, media, globals, animations } = Object.keys(styles).reduce(
       (result, key) => {
         if (
           key.indexOf(Styles.MEDIA_KEY) === -1 &&
@@ -133,17 +131,6 @@ export class Styles {
               ],
             },
           };
-        } else if (typeof styles[key] === 'object') {
-          return {
-            ...result,
-            classes: [
-              ...result.classes,
-              {
-                selector: key,
-                styles: styles[key],
-              },
-            ],
-          };
         } else {
           return {
             ...result,
@@ -159,18 +146,12 @@ export class Styles {
         animations: {},
         media: {} as { [key: string]: CssClass[] },
         globals: [] as CssClass[],
-        classes: [] as { selector: string; styles: WithStyle }[],
       },
     );
 
     return {
       globals,
-      root: [
-        ...(className ? this.splitClasses(root, className) : []),
-        ...(classes.flatMap((current) =>
-          this.splitClasses(current.styles, current),
-        ) || []),
-      ],
+      root: [...(className ? this.splitClasses(root, className) : [])],
       media,
       animations,
     };
