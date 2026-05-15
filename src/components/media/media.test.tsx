@@ -6,7 +6,7 @@ describe('Media Renders: ', () => {
     const { Media } = await import('./media');
 
     const { queryByText } = render(
-      <Media query='(min-width: 1px)'>
+      <Media query='(min-width: 100px)'>
         <h1>Hello</h1>
       </Media>,
     );
@@ -19,7 +19,7 @@ describe('Media Renders: ', () => {
 
     const { queryByText } = render(
       <Media
-        query='(min-width: 1px)'
+        query='(min-width: 999999px)'
         removeFromHtml
       >
         <h1>Hello</h1>

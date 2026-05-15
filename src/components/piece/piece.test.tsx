@@ -57,9 +57,11 @@ describe('Piece Renders', () => {
 
     expect(componentStyle.margin).toBe('10px');
     expect(componentStyle.padding).toBe('12px');
-    expect(componentStyle.color).toBe('#FFF');
-    expect(componentStyle.background).toBe('#333');
-    expect(componentStyle.backgroundColor).toBe('#333');
+    expect(componentStyle.color).toBe('rgb(255, 255, 255)');
+    expect(componentStyle.background).toBe(
+      'rgb(51, 51, 51) none repeat scroll 0% 0% / auto padding-box border-box',
+    );
+    expect(componentStyle.backgroundColor).toBe('rgb(51, 51, 51)');
     expect(componentStyle.fontSize).toBe('20px');
     expect(componentStyle.gap).toBe('5px');
     expect(componentStyle.flexDirection).toBe('column');
@@ -72,8 +74,8 @@ describe('Piece Renders', () => {
     expect(componentStyle.display).toBe('block');
     expect(componentStyle.gridTemplateColumns).toBe('1fr 1fr');
     expect(componentStyle.gridTemplateRows).toBe('1fr 1fr 1fr');
-    expect(componentStyle.gridColumn).toBe('1/2');
-    expect(componentStyle.gridRow).toBe('1/2');
+    expect(componentStyle.gridColumn).toBe('1 / 2');
+    expect(componentStyle.gridRow).toBe('1 / 2');
     expect(componentStyle.flex).toBe('1 0 auto');
   });
 
@@ -105,8 +107,8 @@ describe('Piece Renders', () => {
       container.firstElementChild as Element,
     );
 
-    expect(styles.gridColumn).toBe('5/6');
-    expect(styles.gridRow).toBe('7/8');
+    expect(styles.gridColumn).toBe('5 / 6');
+    expect(styles.gridRow).toBe('7 / 8');
   });
 
   it('It should fill the context properties', () => {
@@ -158,7 +160,7 @@ describe('Piece Renders', () => {
     const styles = window.getComputedStyle(
       document.getElementById('1') as Element,
     );
-    expect(styles.background).toBe('blue');
+    expect(styles.backgroundColor).toBe('rgb(0, 0, 255)');
   });
 
   it('Even with context the priority should be always of itself', () => {
@@ -193,6 +195,6 @@ describe('Piece Renders', () => {
     const element = document.getElementById('1') as Element;
     const styles = window.getComputedStyle(element);
     expect(element).toHaveAttribute('aria-autocomplete', 'none');
-    expect(styles.background).toBe('black');
+    expect(styles.backgroundColor).toBe('rgb(0, 0, 0)');
   });
 });

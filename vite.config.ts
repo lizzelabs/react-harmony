@@ -2,6 +2,7 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react-swc';
+import { playwright } from '@vitest/browser-playwright';
 
 // https://vite.dev/config/
 import { resolve } from 'node:path';
@@ -54,8 +55,15 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    environment: 'happy-dom',
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
     setupFiles: './setupTests.ts',
+    browser: {
+      provider: playwright(),
+      enabled: true,
+      headless: true,
+      screenshotDirectory: './failures',
+      screenshotFailures: false,
+      instances: [{ browser: 'chromium' }],
+    },
   },
 });
