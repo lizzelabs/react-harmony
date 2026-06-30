@@ -105,10 +105,10 @@
     "@types/react-dom": "^19.2.3",
     "@types/stylis": "^4.2.7",
     "@typescript-eslint/parser": "^8.56.0",
-    "@vitejs/plugin-react-swc": "^4.2.2",
-    "@vitest/browser": "4.1.6",
-    "@vitest/browser-playwright": "^4.1.6",
-    "@vitest/coverage-v8": "^4.0.15",
+    "@vitejs/plugin-react-swc": "^4.3.1",
+    "@vitest/browser": "4.1.9",
+    "@vitest/browser-playwright": "^4.1.9",
+    "@vitest/coverage-v8": "^4.1.9",
     "csstype": "^3.2.3",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
@@ -126,10 +126,9 @@
     "react-dom": "^19.2.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4",
-    "vite-plugin-dts": "^4.5.4",
-    "vite-tsconfig-paths": "^6.0.3",
-    "vitest": "^4.1.6"
+    "vite": "^8.1.1",
+    "vite-plugin-dts": "^5.0.3",
+    "vitest": "^4.1.9"
   },
   "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321",
   "peerDependencies": {

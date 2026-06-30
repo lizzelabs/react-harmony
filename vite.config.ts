@@ -6,11 +6,13 @@ import { playwright } from '@vitest/browser-playwright';
 
 // https://vite.dev/config/
 import { resolve } from 'node:path';
-import tsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
+  resolve: {
+    tsconfigPaths: true,
+  },
   build: {
     emptyOutDir: true,
     lib: {
@@ -48,11 +50,7 @@ export default defineConfig({
       ],
     },
   },
-  plugins: [
-    react(),
-    tsConfigPaths(),
-    dts({ tsconfigPath: './tsconfig.app.json' }),
-  ],
+  plugins: [react(), dts({ tsconfigPath: './tsconfig.app.json' })],
   test: {
     globals: true,
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
