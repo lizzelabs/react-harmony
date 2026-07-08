@@ -82,50 +82,54 @@
   },
   "scripts": {
     "development": "nodemon",
-    "build:dev": "tsc --noEmit && vite build --config vite.config.development.ts",
-    "build:prd": "tsc --noEmit && vite build --config vite.config.ts",
-    "test": "vitest",
+    "build:dev": "vite build --config vite.config.development.ts",
+    "build:prd": "vite build --config vite.config.release.ts",
+    "test": "vitest --config vite.config.test.ts",
     "test:ci": "vitest run",
     "coverage": "vitest run --coverage",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "lint": "eslint .",
-    "prepare": "husky"
+    "lint": "oxlint --type-aware --fix src/",
+    "format": "oxfmt",
+    "prepare": "husky",
+    "postinstall": "playwright install --with-deps chromium"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
+    "@rolldown/binding-darwin-arm64": "^1.1.4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
+    "@ttsc/unplugin": "^0.16.7",
     "@types/jest": "^30.0.0",
     "@types/lodash": "^4.17.21",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@types/stylis": "^4.2.7",
-    "@typescript-eslint/parser": "^8.56.0",
-    "@vitejs/plugin-react-swc": "^4.3.1",
+    "@typescript-eslint/parser": "^8.63.0",
+    "@typescript/typescript6": "^6.0.1",
+    "@vitejs/plugin-react": "^6.0.3",
     "@vitest/browser": "4.1.9",
     "@vitest/browser-playwright": "^4.1.9",
     "@vitest/coverage-v8": "^4.1.9",
     "csstype": "^3.2.3",
-    "eslint": "^9.39.1",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "happy-dom": "^20.6.3",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "nodemon": "^3.1.11",
+    "oxfmt": "^0.58.0",
+    "oxlint": "^1.73.0",
+    "oxlint-tsgolint": "^0.24.0",
     "playwright": "^1.60.0",
-    "prettier": "3.7.4",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
-    "typescript": "~5.9.3",
-    "typescript-eslint": "^8.46.4",
+    "ttsc": "^0.16.7",
+    "typescript": "7.0.1-rc",
+    "unplugin-dts": "^1.0.3",
     "vite": "^8.1.1",
     "vite-plugin-dts": "^5.0.3",
     "vitest": "^4.1.9"
@@ -139,13 +143,23 @@
     "lodash": "^4.17.23",
     "stylis": "^4.3.6"
   },
+  "pnpm": {
+    "supportedArchitectures": {
+      "os": [
+        "darwin"
+      ],
+      "cpu": [
+        "arm64"
+      ]
+    }
+  },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "oxlint --type-aware --fix",
+      "oxfmt"
     ],
     "*.{json,md,css}": [
-      "prettier --write"
+      "oxfmt"
     ]
   }
 }

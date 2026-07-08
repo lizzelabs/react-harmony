@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { fillObjectWithDefaults } from './fillObjectWithDefaults';
+import { describe, it, expect } from 'vitest';
 
 describe('fillObjectWithDefaults Tests', () => {
   it.each([

@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { Scrollable } from './scrollable';
+import { describe, it, expect } from 'vitest';
 
 describe('Scrollable Renders', () => {
   it('Should render a scroll', () => {

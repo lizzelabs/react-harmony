@@ -1,60 +1,59 @@
 name: Deploy to GitHub Pages
 
 on:
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
-    build:
-        name: Build Docusaurus
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
+  build:
+    name: Build Docusaurus
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-            - name: Build library
-              run: pnpm run build:prd
+      - name: Build library
+        run: pnpm run build:prd
 
-            - name: Install docs dependencies
-              working-directory: ./docs
-              run: pnpm install --frozen-lockfile
+      - name: Install docs dependencies
+        working-directory: ./docs
+        run: pnpm install --frozen-lockfile
 
-            - name: Build website
-              working-directory: ./docs
-              run: pnpm run build
+      - name: Build website
+        working-directory: ./docs
+        run: pnpm run build
 
-            - name: Upload Build Artifact
-              uses: actions/upload-pages-artifact@v3
-              with:
-                  path: docs/build
-                  
+      - name: Upload Build Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/build
 
-    deploy:
-        name: Deploy to GitHub Pages
-        needs: build
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
 
-        permissions:
-            pages: write # to deploy to Pages
-            id-token: write # to verify the deployment originates from an appropriate source
+    permissions:
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
 
-        # Deploy to the github-pages environment
-        environment:
-            name: github-pages
-            url: ${{ steps.deployment.outputs.page_url }}
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-        runs-on: ubuntu-latest
-        steps:
-            - name: Deploy to GitHub Pages
-              id: deployment
-              uses: actions/deploy-pages@v4
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

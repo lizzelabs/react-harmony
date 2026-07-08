@@ -15,9 +15,7 @@ export function withPieceAsContainer<
   >,
   defaultContainerProps: PieceAlignmentAndStyleProperties<Theme> & {
     injectContainerProps?: InjectProps;
-  } = {} as PieceAlignmentAndStyleProperties<Theme> & {
-    injectContainerProps?: InjectProps;
-  },
+  } = {},
 ): ComponentType<
   Props &
     PieceAlignmentAndStyleProperties<Theme> & {
@@ -50,6 +48,7 @@ export function withPieceAsContainer<
 
     const { known: piece, unknown: props } = splitProps(
       properties,
+      // oxlint-disable-next-line typescript/no-unsafe-argument
       knownProperties as any,
     );
 
@@ -71,6 +70,7 @@ export function withPieceAsContainer<
           {...(props as any)}
           {...(injectContainerProps ? otherDefaults : {})}
         >
+          {/* eslint-disable-next-line typescript/no-unsafe-member-access */}
           {(props as any)?.children as ReactNode}
         </Component>
       </Piece>

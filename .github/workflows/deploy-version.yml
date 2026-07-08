@@ -62,7 +62,9 @@ jobs:
 
       - name: Bump version in package.json
         uses: actions/github-script@v7
-        if: steps.package_version.outputs.currentVersion != steps.milestone.outputs.version
+        if:
+          steps.package_version.outputs.currentVersion !=
+          steps.milestone.outputs.version
         with:
           script: |
             const pkg = require('./package.json');
@@ -70,14 +72,18 @@ jobs:
             require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2));
 
       - name: Configurar Git
-        if: steps.package_version.outputs.currentVersion != steps.milestone.outputs.version
+        if:
+          steps.package_version.outputs.currentVersion !=
+          steps.milestone.outputs.version
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Bump
 
-        if: steps.package_version.outputs.currentVersion != steps.milestone.outputs.version
+        if:
+          steps.package_version.outputs.currentVersion !=
+          steps.milestone.outputs.version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

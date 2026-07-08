@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/triple-slash-reference */
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react-swc';
-import { playwright } from '@vitest/browser-playwright';
 
 // https://vite.dev/config/
 import { resolve } from 'node:path';
-import dts from 'vite-plugin-dts';
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
@@ -15,6 +12,18 @@ export default defineConfig({
   },
   build: {
     emptyOutDir: true,
+    rolldownOptions: {
+      output: [
+        {
+          format: 'es',
+          entryFileNames: '[name].es.js',
+        },
+        {
+          format: 'cjs',
+          entryFileNames: '[name].cjs',
+        },
+      ],
+    },
     lib: {
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
@@ -34,7 +43,6 @@ export default defineConfig({
         types: resolve(__dirname, 'src/types'),
         utils: resolve(__dirname, 'src/utils'),
       },
-      formats: ['cjs', 'es'],
       fileName: (format, entryName) => `${entryName}.${format}.js`,
     },
     sourcemap: false,
@@ -48,20 +56,6 @@ export default defineConfig({
           },
         },
       ],
-    },
-  },
-  plugins: [react(), dts({ tsconfigPath: './tsconfig.app.json' })],
-  test: {
-    globals: true,
-    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
-    setupFiles: './setupTests.ts',
-    browser: {
-      provider: playwright(),
-      enabled: true,
-      headless: true,
-      screenshotDirectory: './failures',
-      screenshotFailures: false,
-      instances: [{ browser: 'chromium' }],
     },
   },
 });

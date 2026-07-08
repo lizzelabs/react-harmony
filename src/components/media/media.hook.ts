@@ -39,7 +39,7 @@ export const useMedia = <Theme extends object | undefined>({
   );
 
   const onMediaChange = useCallback(
-    (event: MediaQueryListEvent) => {
+    (event: Readonly<MediaQueryListEvent>) => {
       if (event.matches && onActivate) {
         refresh((prev) => !prev);
         onActivate();
@@ -48,11 +48,11 @@ export const useMedia = <Theme extends object | undefined>({
     [onActivate],
   );
 
-  const shouldRemoveComponent =
-    window.matchMedia(`(${typeof query === 'function' ? query(theme) : query})`)
-      .matches === false
-      ? removeFromHtml || false
-      : false;
+  const shouldRemoveComponent = window.matchMedia(
+    `(${typeof query === 'function' ? query(theme) : query})`,
+  ).matches
+    ? false
+    : removeFromHtml || false;
 
   useEffect(
     function onRender() {

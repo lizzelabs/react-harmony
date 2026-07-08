@@ -13,6 +13,7 @@
     "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "declaration": false,
+    "noEmit": false,
     "declarationMap": false,
     "moduleDetection": "force",
     "jsx": "react-jsx",
@@ -36,12 +37,6 @@
       }
     ]
   },
-  "include": ["./src/**/*"],
-  "exclude": [
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "vite.config.ts",
-    "vite.config.development.ts",
-    "./src/setupTests.ts"
-  ]
+  "include": ["./src/**/*", "./src/setupTests.ts"],
+  "exclude": ["vite.config.ts", "vite.config.development.ts"]
 }

@@ -25,7 +25,8 @@ export const PieceUtils = {
       (result, current) =>
         toDelete.includes(current)
           ? result
-          : { ...result, [current]: props[current] },
+          : // oxlint-disable-next-line typescript/no-unsafe-assignment
+            { ...result, [current]: props[current] },
       {} as PieceProperties<Theme, Element, Component>,
     );
 
@@ -49,13 +50,13 @@ export const PieceUtils = {
     }
 
     return Array.isArray(style)
-      ? style.reduce(
+      ? (style.reduce(
           (css, current) => ({
             ...css,
             ...(typeof current === 'function' ? current(theme) : current),
           }),
-          {} as any,
-        )
+          {} as WithStyle,
+        ) as WithStyle)
       : style;
   },
   loadProperties: <
@@ -73,15 +74,14 @@ export const PieceUtils = {
           ? result
           : {
               ...result,
-              [TRANSLATOR_PIECE_STYLE_PROPERTIES_MAP[current] !== undefined
-                ? TRANSLATOR_PIECE_STYLE_PROPERTIES_MAP[current]
-                : current]:
-                LOADER_PIECE_STYLE_PROPERTIES_MAP[current] !== undefined
-                  ? LOADER_PIECE_STYLE_PROPERTIES_MAP[current](
-                      theme,
-                      props[current],
-                    )
-                  : LOADER_PIECE_STYLE_PROPERTIES_MAP.all(
+              // oxlint-disable-next-line typescript/no-unsafe-assignment
+              [TRANSLATOR_PIECE_STYLE_PROPERTIES_MAP[current] === undefined
+                ? current
+                : TRANSLATOR_PIECE_STYLE_PROPERTIES_MAP[current]]:
+                LOADER_PIECE_STYLE_PROPERTIES_MAP[current] === undefined
+                  ? LOADER_PIECE_STYLE_PROPERTIES_MAP.all(theme, props[current])
+                  : // oxlint-disable-next-line typescript/no-unsafe-call
+                    LOADER_PIECE_STYLE_PROPERTIES_MAP[current](
                       theme,
                       props[current],
                     ),
@@ -90,12 +90,13 @@ export const PieceUtils = {
     );
 
     const withStyle = (appendTo || []).reduce(
+      // oxlint-disable-next-line typescript/no-unsafe-return
       (css, current) => ({
         ...css,
         ...current,
       }),
       {} as WithStyle,
-    );
+    ) as WithStyle;
 
     const objectIsPresent =
       Object.keys(withStyle).length > 0 || Object.keys(styles).length > 0;

@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { Screen } from './screen';
+import { describe, it, expect } from 'vitest';
 
 describe('Screen Renders', () => {
   it('It should render', () => {

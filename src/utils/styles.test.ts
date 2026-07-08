@@ -31,10 +31,11 @@ describe('Styles test', () => {
   ])(
     `Should insert $type with: $value`,
     (
-      type: string,
+      _: string,
       value: any,
       className: string,
       getStyleDom: () => CSSStyleDeclaration,
+      // oxlint-disable-next-line typescript/prefer-readonly-parameter-types
       expected: { key: string; expected: any }[],
     ) => {
       const style = new Styles();
@@ -48,6 +49,7 @@ describe('Styles test', () => {
       const elementStyle = getStyleDom();
 
       for (const toExpect of expected) {
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion, typescript/no-unsafe-member-access
         expect(elementStyle[toExpect.key as any]).toBe(toExpect.expected);
       }
 
@@ -100,9 +102,9 @@ describe('Styles test', () => {
   it('Should insert a global style', () => {
     const style = new Styles();
 
-    expect(() =>
-      style.apply({ 'html, body': { background: 'blue' } }),
-    ).not.toThrow();
+    expect(() => {
+      style.apply({ 'html, body': { background: 'blue' } });
+    }).not.toThrow();
     expect(window.getComputedStyle(document.body).backgroundColor).toBe(
       'rgb(0, 0, 255)',
     );

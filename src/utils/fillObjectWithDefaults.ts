@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable no-unsafe-member-access */
+/* oxlint-disable no-unsafe-assignment */
 
 export const fillObjectWithDefaults = <T extends object, D extends object>(
   obj: T,
@@ -13,9 +15,9 @@ export const fillObjectWithDefaults = <T extends object, D extends object>(
 
       if (
         typeof targetValue === 'object' &&
-        Array.isArray(targetValue) === false &&
+        !Array.isArray(targetValue) &&
         typeof defaultValue === 'object' &&
-        Array.isArray(defaultValue) === false
+        !Array.isArray(defaultValue)
       ) {
         copy[key as any] = { ...defaultValue, ...targetValue };
       } else if (targetValue === undefined) {
@@ -24,5 +26,5 @@ export const fillObjectWithDefaults = <T extends object, D extends object>(
     }
   }
 
-  return copy as T;
+  return copy;
 };

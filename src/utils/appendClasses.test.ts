@@ -1,4 +1,5 @@
 import { appendClasses } from './appendClasses';
+import { describe, it, expect } from 'vitest';
 
 describe('appendClasses Tests', () => {
   it('It should return a single string with spaces separating ', () => {

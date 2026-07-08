@@ -20,6 +20,7 @@ export const SCROLLABLE: ProviderPattern<any, any> = {
     highlight,
     primary,
     scrollMode,
+    theme,
   }: ScrollableProperties<any, any>) => {
     return {
       '--primary': 'rgb(220, 220, 220)',
@@ -37,18 +38,20 @@ export const SCROLLABLE: ProviderPattern<any, any> = {
       scrollbarWidth: size,
       WebkitOverflowScrolling: 'touch',
       touchAction: touchAction ? touchAction : vertical ? 'pan-y' : 'pan-x',
-      scrollbarColor: `${highlight} ${primary}`,
+      scrollbarColor: `${typeof highlight === 'function' ? highlight(theme) : highlight} ${typeof primary === 'function' ? primary(theme) : primary}`,
       [`@supports not (scrollbar-width: ${size})`]: {
         '&::-webkit-scrollbar': {
           width: '8px',
         },
         '&::-webkit-scrollbar-thumb': {
-          backgroundColor: primary,
-          border: `1px solid ${primary}`,
+          backgroundColor:
+            typeof primary === 'function' ? primary(theme) : primary,
+          border: `1px solid ${typeof primary === 'function' ? primary(theme) : primary}`,
         },
         '&::-webkit-scrollbar-track': {
-          boxShadow: `inset 0 0 0 ${size}px ${highlight}`,
-          backgroundColor: highlight,
+          boxShadow: `inset 0 0 0 ${size}px ${typeof highlight === 'function' ? highlight(theme) : highlight}`,
+          backgroundColor:
+            typeof highlight === 'function' ? highlight(theme) : highlight,
         },
       },
     };

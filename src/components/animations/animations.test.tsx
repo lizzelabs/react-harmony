@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import { describe } from 'vitest';
 import { Animations } from './animations';
+import { describe, it, expect } from 'vitest';
 
 describe('Animations Render', () => {
   it('Should render animation in the document', () => {

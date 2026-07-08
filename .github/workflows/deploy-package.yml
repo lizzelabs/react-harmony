@@ -28,14 +28,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
           registry-url: https://registry.npmjs.org/
-          scope: "@lizzelabs"
+          scope: '@lizzelabs'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps chromium
-
+      - name: Install Playwright Operating System Dependencies
+        run: npx playwright install-deps
       - name: Test
         run: pnpm test:ci
 

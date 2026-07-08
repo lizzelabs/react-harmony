@@ -1,7 +1,7 @@
 import type { HtmlTag } from '@/types';
 import type { ScrollableProperties } from './scrollable.types';
 import { useRef } from 'react';
-import { usePiece, type PieceProperties } from '../piece';
+import { usePiece } from '../piece';
 
 export const useScrollable = <
   Theme extends object | undefined,
@@ -25,5 +25,5 @@ export const useScrollable = <
       'primary',
       'highlight',
     ],
-  } as PieceProperties<Theme, Element, Component>);
+  });
 };

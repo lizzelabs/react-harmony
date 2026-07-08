@@ -15,7 +15,7 @@ const InternalMedia = <Theme extends object | undefined>(
       as='section'
       withStyle={style}
     >
-      {shouldRemoveComponent === false ? props.children : null}
+      {shouldRemoveComponent ? null : props.children}
     </Piece>
   );
 };

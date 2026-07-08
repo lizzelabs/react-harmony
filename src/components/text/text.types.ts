@@ -5,4 +5,4 @@ export type TextProperties<
   Theme extends object | undefined,
   Element extends TextTag,
   Component extends HTMLElement = HTMLElementTagNameMap[Element],
-> = {} & PieceProperties<Theme, Element, Component>;
+> = PieceProperties<Theme, Element, Component>;

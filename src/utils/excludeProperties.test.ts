@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { excludeProperties } from './excludeProperties';
+import { describe, it, expect } from 'vitest';
 
 describe('excludeProperties Tests', () => {
   it.each([

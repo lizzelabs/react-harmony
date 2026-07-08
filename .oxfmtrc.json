@@ -14,6 +14,7 @@
   "embeddedLanguageFormatting": "auto",
   "singleAttributePerLine": true,
   "importOrderSortSpecifiers": true,
-  "importOrderSeparation": false
+  "importOrderSeparation": false,
+  "sortPackageJson": false,
+  "ignorePatterns": ["dist", "coverage", "node_modules"]
 }
-

@@ -1,4 +1,5 @@
 import { splitProps } from './splitProps';
+import { describe, it, expect } from 'vitest';
 
 describe('splitProps Tests', () => {
   it('It should split between unknow props and know props', () => {

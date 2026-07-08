@@ -8,7 +8,7 @@ export const useStyle = <T extends UseStyle>(
   const style = useMemo(() => new Styles(), []);
   const classes = useMemo(() => Object.keys(withStyle), [withStyle]);
   const noGlobalClasses = useMemo(
-    () => classes.filter((current) => current.includes('@global') === false),
+    () => classes.filter((current) => !current.includes('@global')),
     [classes],
   );
 
@@ -34,8 +34,8 @@ export const useStyle = <T extends UseStyle>(
       (result, current) => ({ ...result, [current]: current }),
       {},
     ),
-    append: (...classes: string[]) => {
-      return classes.join(' ');
+    append: (...otherClasses: string[]) => {
+      return otherClasses.join(' ');
     },
     appendAll: () => {
       return noGlobalClasses.join(' ');

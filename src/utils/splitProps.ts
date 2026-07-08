@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable no-unsafe-assignment */
+/* oxlint-disable no-unsafe-argument */
+
 export const splitProps = <T extends object, K extends keyof T>(
   obj: T,
   knownKeys: K[],

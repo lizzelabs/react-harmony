@@ -10,7 +10,7 @@ export const InternalText = <
   Element extends TextTag,
   Component extends HTMLElement = HTMLElementTagNameMap[Element],
 >(
-  props: TextProperties<T, Element, Component>,
+  props: Readonly<TextProperties<T, Element, Component>>,
 ) => {
   return useText<T, Element, Component>(props).element;
 };

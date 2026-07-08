@@ -1,4 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable no-unsafe-member-access */
+/* oxlint-disable no-unsafe-argument */
+/* oxlint-disable no-unsafe-call */
+/* oxlint-disable no-unsafe-assignment */
+
 import type { CssClass, WithStyle } from '@/types';
 import type { CSSProperties } from 'react';
 import { excludeProperties } from './excludeProperties';
@@ -36,9 +41,9 @@ export class Styles {
 
     return `${selector}{${Object.entries(styles)
       .map(([key, value]) =>
-        value !== undefined
-          ? `${key.replace(/[A-Z]/g, (r) => '-' + r.toLowerCase())}:${value}; `
-          : ``,
+        value === undefined
+          ? ``
+          : `${key.replace(/[A-Z]/gu, (r) => '-' + r.toLowerCase())}:${value}; `,
       )
       .join('')}}`;
   }
@@ -91,12 +96,13 @@ export class Styles {
       : pseudoCss;
   }
 
+  // oxlint-disable max-lines-per-function
   private splitRules(styles: WithStyle, className?: string) {
     const { root, media, globals, animations } = Object.keys(styles).reduce(
       (result, key) => {
         if (
-          key.indexOf(Styles.MEDIA_KEY) === -1 &&
-          key.indexOf(Styles.PSEUDO_KEY) === -1 &&
+          !key.includes(Styles.MEDIA_KEY) &&
+          !key.includes(Styles.PSEUDO_KEY) &&
           typeof styles[key] === 'object'
         ) {
           return {
@@ -131,20 +137,19 @@ export class Styles {
               ],
             },
           };
-        } else {
-          return {
-            ...result,
-            root: {
-              ...result.root,
-              [key]: styles[key],
-            },
-          };
         }
+        return {
+          ...result,
+          root: {
+            ...result.root,
+            [key]: styles[key],
+          },
+        };
       },
       {
         root: {},
         animations: {},
-        media: {} as { [key: string]: CssClass[] },
+        media: {},
         globals: [] as CssClass[],
       },
     );

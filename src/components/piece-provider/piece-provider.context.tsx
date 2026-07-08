@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* oxlint-disable typescript/no-unsafe-assignment */
 
 import { createContext } from 'react';
 import type { PieceContext, PieceProviderData } from './piece-provider.types';

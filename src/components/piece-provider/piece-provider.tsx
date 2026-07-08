@@ -42,8 +42,8 @@ const InternalPieceProvider = <Theme extends object>(
             (a.order || 0) -
             (b.order || 0) +
             comparer.compare(
-              a.applyOn.toString().replace(/[^a-zA-Z0-9]/g, ''),
-              b.applyOn.toString().replace(/[^a-zA-Z0-9]/g, ''),
+              a.applyOn.toString().replace(/[^a-zA-Z0-9]/gu, ''),
+              b.applyOn.toString().replace(/[^a-zA-Z0-9]/gu, ''),
             )
           );
         });

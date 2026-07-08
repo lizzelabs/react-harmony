@@ -3,6 +3,7 @@ import { PieceProviderContext } from './piece-provider.context';
 import type { PieceProviderData } from './piece-provider.types';
 
 export const usePieceProvider = <T extends object | undefined>() => {
+  // oxlint-disable-next-line typescript/no-unsafe-argument
   const context = useContext<PieceProviderData<T>>(PieceProviderContext);
 
   if (!context) {

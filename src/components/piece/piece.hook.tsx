@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable max-lines-per-function */
 
 import type { HtmlTag } from '@/types';
 import type { PieceProperties } from './piece.types';
@@ -62,7 +63,7 @@ export const usePiece = <
     [componentDefaults],
   );
 
-  const Piece = (componentDefaults.as || 'div') as any;
+  const Piece = (componentDefaults.as || 'div') as unknown as React.ElementType;
 
   useInsertionEffect(
     function applyCss() {

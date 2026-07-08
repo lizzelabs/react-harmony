@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable typescript/no-unsafe-call */
+/* oxlint-disable typescript/no-unsafe-return */
+
 import type { PieceProperties } from './piece.types';
 
 export const PIECE_STYLES_PROPERTIES = [

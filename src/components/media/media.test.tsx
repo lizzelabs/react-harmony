@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { it, describe } from 'vitest';
+import { it, describe, expect } from 'vitest';
 
 describe('Media Renders: ', () => {
   it('It should render', async () => {
